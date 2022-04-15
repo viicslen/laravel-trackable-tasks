@@ -5,7 +5,6 @@ namespace ViicSlen\TrackableTasks;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
@@ -19,7 +18,8 @@ class TrackableTasks
 {
     protected string $connection;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->connection = config('trackable-task.database.connection', config('database.default', 'mysql'));
     }
 
@@ -68,7 +68,6 @@ class TrackableTasks
         return isset($uses[Trackable::class]) || method_exists($job, 'getTaskId')
             ? $job->getTaskId()
             : null;
-
     }
 
     public function getTask($trackable): ?TrackableTask

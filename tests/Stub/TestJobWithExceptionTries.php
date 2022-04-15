@@ -19,7 +19,8 @@ class TestJobWithExceptionTries implements ShouldQueue
 
     public int $tries = 3;
 
-    public function handle(): void {
+    public function handle(): void
+    {
         throw new \Exception('test-exception');
     }
 }

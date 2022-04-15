@@ -19,7 +19,8 @@ class TestJobWithException implements ShouldQueue
 
     public $maxExceptions = 0;
 
-    public function handle(): void {
+    public function handle(): void
+    {
         throw new \Exception('test-exception');
     }
 }

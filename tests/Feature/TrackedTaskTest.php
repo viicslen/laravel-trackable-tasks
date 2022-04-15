@@ -1,8 +1,8 @@
 <?php
 
+use function Pest\Laravel\artisan;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 use ViicSlen\TrackableTasks\Models\TrackedTask;
-use function Pest\Laravel\artisan;
 
 it('prunes old models', function () {
     TrackedTask::factory()

@@ -19,7 +19,7 @@ class TestJobWithoutTracking implements ShouldQueue
 
     protected bool $shouldTrack = false;
 
-    public function handle(): void {
-
+    public function handle(): void
+    {
     }
 }

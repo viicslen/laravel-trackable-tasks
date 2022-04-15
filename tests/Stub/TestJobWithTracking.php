@@ -17,7 +17,8 @@ class TestJobWithTracking implements ShouldQueue
     use Trackable;
     use Batchable;
 
-    public function handle(): void {
+    public function handle(): void
+    {
         $this->setProgressMax(200);
 
         $this->incrementProgress();

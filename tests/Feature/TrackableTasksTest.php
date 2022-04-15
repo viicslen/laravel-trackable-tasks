@@ -1,9 +1,9 @@
 <?php
 
+use function Pest\Laravel\assertDatabaseHas;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 use ViicSlen\TrackableTasks\Facades\TrackableTasks;
 use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithFail;
-use function Pest\Laravel\assertDatabaseHas;
 
 it('can create task', function () {
     $job = new TestJobWithFail();

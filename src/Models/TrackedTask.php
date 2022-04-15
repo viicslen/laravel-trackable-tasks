@@ -127,7 +127,7 @@ class TrackedTask extends Model implements TrackableTask
 
     public function hasStarted(): bool
     {
-        return !is_null($this->started_at);
+        return ! is_null($this->started_at);
     }
 
     public function hasFinished(): bool

@@ -1,20 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Bus;
-use ViicSlen\TrackableTasks\Contracts\TrackableTask;
-use ViicSlen\TrackableTasks\Facades\TrackableTasks;
-use ViicSlen\TrackableTasks\Models\TrackedTask;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithoutTracking;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithException;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithFail;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithTracking;
 use function Pest\Laravel\artisan;
 use function Pest\Laravel\assertDatabaseHas;
+use ViicSlen\TrackableTasks\Contracts\TrackableTask;
+use ViicSlen\TrackableTasks\Facades\TrackableTasks;
+use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithException;
+use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithFail;
+use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithoutTracking;
+use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithTracking;
 
 it('track batches', function () {
     $batch = TrackableTasks::batch([
-        new TestJobWithoutTracking,
-        new TestJobWithoutTracking,
+        new TestJobWithoutTracking(),
+        new TestJobWithoutTracking(),
     ], 'Test Batch')->dispatch();
 
     assertDatabaseHas('tracked_tasks', [
@@ -25,7 +23,7 @@ it('track batches', function () {
 });
 
 it('tracks finished tasks', function () {
-    $job = new TestJobWithTracking;
+    $job = new TestJobWithTracking();
 
     assertDatabaseHas('tracked_tasks', [
         'id' => $job->getTaskId(),
@@ -44,7 +42,7 @@ it('tracks finished tasks', function () {
 it('tracks failed status with exception', function () {
     config()->set('queue.default', 'database');
 
-    $job = new TestJobWithException;
+    $job = new TestJobWithException();
 
     dispatch($job);
     artisan('queue:work', ['--once' => 1]);
@@ -56,7 +54,7 @@ it('tracks failed status with exception', function () {
 });
 
 it('tracks failed status with fail', function () {
-    $job = new TestJobWithFail;
+    $job = new TestJobWithFail();
 
     dispatch($job);
     artisan('queue:work', ['--once' => 1]);
@@ -67,9 +65,9 @@ it('tracks failed status with fail', function () {
     ]);
 });
 
-it('doesn\'t track jobs when should track is set to false' , function () {
+it('doesn\'t track jobs when should track is set to false', function () {
     $task = app(TrackableTask::class);
-    $job = new TestJobWithoutTracking;
+    $job = new TestJobWithoutTracking();
 
     expect($job->getTaskId())->toBeNull();
     expect($task::query()->count())->toEqual(0);
