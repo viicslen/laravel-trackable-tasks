@@ -42,6 +42,7 @@ trait Trackable
     protected function setProgressMax($value): bool
     {
         $this->progressMax = $value;
+
         return $this->updateTask(['progress_max' => $value]);
     }
 
@@ -49,13 +50,14 @@ trait Trackable
     {
         $this->progressNow = $value;
 
-        return !($value % $every === 0 || $value === $this->progressMax)
+        return ! ($value % $every === 0 || $value === $this->progressMax)
             || $this->updateTask(['progress_now' => $value]);
     }
 
     protected function incrementProgress($offset = 1, $every = 1): bool
     {
         $value = $this->progressNow + $offset;
+
         return $this->setProgressNow($value, $every);
     }
 

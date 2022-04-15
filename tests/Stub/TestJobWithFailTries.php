@@ -19,7 +19,8 @@ class TestJobWithFailTries implements ShouldQueue
 
     public int $tries = 3;
 
-    public function handle(): void {
+    public function handle(): void
+    {
         $this->fail(new \Exception('test-exception'));
     }
 }

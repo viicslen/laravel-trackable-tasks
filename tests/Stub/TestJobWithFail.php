@@ -17,7 +17,8 @@ class TestJobWithFail implements ShouldQueue
     use Trackable;
     use Batchable;
 
-    public function handle(): void {
+    public function handle(): void
+    {
         $this->fail(new \Exception('test-exception'));
     }
 }
