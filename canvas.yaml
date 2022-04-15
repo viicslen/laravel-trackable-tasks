@@ -1,0 +1,26 @@
+preset: package
+
+namespace: ViicSlen\TrackableTasks
+user-auth-provider: App\User
+
+paths:
+  src: src
+
+factory:
+  path: database/factories
+
+migration:
+  path: database/migrations
+  prefix: ''
+
+console:
+  namespace: ViicSlen\TrackableTasks\Console
+
+model:
+  namespace: ViicSlen\TrackableTasks\Models
+
+provider:
+  namespace: ViicSlen\TrackableTasks
+
+testing:
+  namespace: ViicSlen\TrackableTasks\Tests

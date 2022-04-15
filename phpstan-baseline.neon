@@ -1,0 +1,22 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$id\\.$#"
+			count: 1
+			path: src/TrackableTasks.php
+
+		-
+			message: "#^Cannot call method batch\\(\\) on class\\-string\\|object\\.$#"
+			count: 3
+			path: src/TrackableTasks.php
+
+		-
+			message: "#^Method ViicSlen\\\\TrackableTasks\\\\TrackableTasks\\:\\:createTask\\(\\) should return ViicSlen\\\\TrackableTasks\\\\Contracts\\\\TrackableTask but returns Illuminate\\\\Database\\\\Eloquent\\\\Model\\.$#"
+			count: 1
+			path: src/TrackableTasks.php
+
+		-
+			message: "#^Method ViicSlen\\\\TrackableTasks\\\\TrackableTasks\\:\\:getTask\\(\\) should return ViicSlen\\\\TrackableTasks\\\\Contracts\\\\TrackableTask\\|null but returns Illuminate\\\\Database\\\\Eloquent\\\\Model\\|null\\.$#"
+			count: 1
+			path: src/TrackableTasks.php
+
