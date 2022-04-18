@@ -39,14 +39,14 @@ trait Trackable
         return TrackableTasks::updateTask($this, $data);
     }
 
-    protected function taskSetProgressMax($value): bool
+    protected function taskSetProgressMax(int $value): bool
     {
         $this->progressMax = $value;
 
         return $this->updateTask(['progress_max' => $value]);
     }
 
-    protected function taskSetProgressNow($value, $every = 1): bool
+    protected function taskSetProgressNow(int $value, int $every = 1): bool
     {
         $this->progressNow = $value;
 
@@ -54,7 +54,7 @@ trait Trackable
             || $this->updateTask(['progress_now' => $value]);
     }
 
-    protected function taskIncrementProgress($offset = 1, $every = 1): bool
+    protected function taskIncrementProgress(int $offset = 1, int $every = 1): bool
     {
         $value = $this->progressNow + $offset;
 
