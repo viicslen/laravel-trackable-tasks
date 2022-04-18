@@ -25,7 +25,7 @@ return new class extends Migration
             $table->unsignedInteger('progress_now')->default(0);
             $table->unsignedInteger('progress_max')->default(0);
             $table->unsignedInteger('attempts')->default(0);
-            $table->json('exceptions')->default('[]');
+            $table->json('exceptions')->nullable();
             $table->json('output')->nullable();
             $table->timestamps();
             $table->timestamp('started_at')->nullable();
