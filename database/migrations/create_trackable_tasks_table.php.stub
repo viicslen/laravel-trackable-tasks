@@ -12,7 +12,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(config('trackable-tasks.database.table', 'tracked_tasks'), function (Blueprint $table) {
             $table->id();

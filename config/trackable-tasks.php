@@ -55,6 +55,6 @@ return [
     'database' => [
         'connection' => null,
 
-        'table' => 'tracked_task',
+        'table' => 'tracked_tasks',
     ],
 ];
