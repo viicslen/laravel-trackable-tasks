@@ -65,4 +65,14 @@ trait Trackable
     {
         return $this->setProgressNow($this->progressMax);
     }
+
+    protected function setMessage(string $message): bool
+    {
+        return $this->updateTask(['message' => $message]);
+    }
+
+    protected function setOutput(array $output): bool
+    {
+        return $this->updateTask(['output' => $output]);
+    }
 }
