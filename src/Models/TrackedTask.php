@@ -109,7 +109,7 @@ class TrackedTask extends Model implements TrackableTask
 
     public function addException(mixed $exception): bool
     {
-        return $this->setExceptions(array_merge($this->exceptions, [$exception]));
+        return $this->setExceptions(array_merge($this->exceptions ?? [], [$exception]));
     }
 
     public function setOutput(array $output): bool
