@@ -1,11 +1,11 @@
 <?php
 
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithoutTracking;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithTracking;
+use function Pest\Laravel\assertDatabaseHas;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 use ViicSlen\TrackableTasks\Facades\TrackableTasks;
 use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithFail;
-use function Pest\Laravel\assertDatabaseHas;
+use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithoutTracking;
+use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithTracking;
 
 it('can create task', function () {
     $job = new TestJobWithFail();
@@ -62,14 +62,14 @@ it('can add exception', function () {
 
     assertDatabaseHas('tracked_tasks', [
         'id' => $job->getTaskId(),
-        'exceptions' => "[\"first-exception\"]"
+        'exceptions' => "[\"first-exception\"]",
     ]);
 
     TrackableTasks::addTaskException($job, 'second-exception');
 
     assertDatabaseHas('tracked_tasks', [
         'id' => $job->getTaskId(),
-        'exceptions' => "[\"first-exception\",\"second-exception\"]"
+        'exceptions' => "[\"first-exception\",\"second-exception\"]",
     ]);
 });
 
