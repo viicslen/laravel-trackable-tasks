@@ -56,10 +56,28 @@ it('updates the message', function () {
 it('updates the output', function () {
     $task = TrackedTask::factory()->create();
 
-    $task->setOutput(['key1' => 'world', 'key2' => 'world']);
+    $task->setOutput(['key1' => 'hello', 'key2' => 'world']);
     $task->refresh();
 
-    expect($task)->output->toEqual(['key1' => 'world', 'key2' => 'world']);
+    expect($task)->output->toEqual(['key1' => 'hello', 'key2' => 'world']);
+});
+
+it('updates the exceptions', function () {
+    $task = TrackedTask::factory()->create();
+
+    $task->setExceptions(['hello', 'world']);
+    $task->refresh();
+
+    expect($task)->exceptions->toEqual(['hello', 'world']);
+});
+
+it('can add exception', function () {
+    $task = TrackedTask::factory()->create();
+
+    $task->addException('hello world');
+    $task->refresh();
+
+    expect($task)->exceptions->toEqual(['hello world']);
 });
 
 it('can be marked as started', function () {

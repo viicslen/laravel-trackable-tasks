@@ -65,21 +65,21 @@ class TestJobWithTracking implements ShouldQueue
     use Trackable;
 
     public function handle(): void {
-        $this->setProgressMax(200);
+        $this->taskSetProgressMax(200);
 
-        $this->incrementProgress();
-
-        sleep(1);
-        $this->incrementProgress(10);
+        $this->taskIncrementProgress();
 
         sleep(1);
-        $this->incrementProgress(20);
+        $this->taskIncrementProgress(10);
 
         sleep(1);
-        $this->incrementProgress(30);
+        $this->taskIncrementProgress(20);
 
         sleep(1);
-        $this->finishProgress();
+        $this->taskIncrementProgress(30);
+
+        sleep(1);
+        $this->taskFinishProgress();
     }
 }
 ```

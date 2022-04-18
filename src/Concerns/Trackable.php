@@ -39,14 +39,14 @@ trait Trackable
         return TrackableTasks::updateTask($this, $data);
     }
 
-    protected function setProgressMax($value): bool
+    protected function taskSetProgressMax($value): bool
     {
         $this->progressMax = $value;
 
         return $this->updateTask(['progress_max' => $value]);
     }
 
-    protected function setProgressNow($value, $every = 1): bool
+    protected function taskSetProgressNow($value, $every = 1): bool
     {
         $this->progressNow = $value;
 
@@ -54,24 +54,34 @@ trait Trackable
             || $this->updateTask(['progress_now' => $value]);
     }
 
-    protected function incrementProgress($offset = 1, $every = 1): bool
+    protected function taskIncrementProgress($offset = 1, $every = 1): bool
     {
         $value = $this->progressNow + $offset;
 
-        return $this->setProgressNow($value, $every);
+        return $this->taskSetProgressNow($value, $every);
     }
 
-    protected function finishProgress(): bool
+    protected function taskFinishProgress(): bool
     {
-        return $this->setProgressNow($this->progressMax);
+        return $this->taskSetProgressNow($this->progressMax);
     }
 
-    protected function setMessage(string $message): bool
+    protected function taskSetMessage(string $message): bool
     {
         return $this->updateTask(['message' => $message]);
     }
 
-    protected function setOutput(array $output): bool
+    protected function taskSetExceptions(array $exceptions): bool
+    {
+        return $this->updateTask(['exceptions' => $exceptions]);
+    }
+
+    protected function taskRecordException(mixed $exception): bool
+    {
+        return TrackableTasks::addTaskException($this, $exception);
+    }
+
+    protected function taskSetOutput(array $output): bool
     {
         return $this->updateTask(['output' => $output]);
     }

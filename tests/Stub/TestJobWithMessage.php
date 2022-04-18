@@ -9,7 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use ViicSlen\TrackableTasks\Concerns\Trackable;
 
-class TestJobWithTracking implements ShouldQueue
+class TestJobWithMessage implements ShouldQueue
 {
     use InteractsWithQueue;
     use Queueable;
@@ -19,20 +19,6 @@ class TestJobWithTracking implements ShouldQueue
 
     public function handle(): void
     {
-        $this->taskSetProgressMax(200);
-
-        $this->taskIncrementProgress();
-
-        sleep(1);
-        $this->taskIncrementProgress(10);
-
-        sleep(1);
-        $this->taskIncrementProgress(20);
-
-        sleep(1);
-        $this->taskIncrementProgress(30);
-
-        sleep(1);
-        $this->taskFinishProgress();
+        $this->taskSetMessage('hello world');
     }
 }

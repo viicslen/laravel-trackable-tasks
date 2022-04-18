@@ -19,10 +19,11 @@ use ViicSlen\TrackableTasks\Contracts\TrackableTask;
  * @property string $queue
  * @property string $status
  * @property string $message
- * @property array $output
- * @property int $attempts
  * @property int $progress_now
  * @property int $progress_max
+ * @property int $attempts
+ * @property array $exceptions
+ * @property array $output
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $started_at
@@ -49,10 +50,11 @@ class TrackedTask extends Model implements TrackableTask
         'queue',
         'status',
         'message',
-        'output',
-        'attempts',
         'progress_now',
         'progress_max',
+        'attempts',
+        'exceptions',
+        'output',
         'created_at',
         'started_at',
         'finished_at',
@@ -60,8 +62,18 @@ class TrackedTask extends Model implements TrackableTask
 
     protected $casts = [
         'output' => 'array',
+        'exceptions' => 'array',
         'started_at' => 'datetime',
         'finished_at' => 'datetime',
+    ];
+
+    protected $attributes = [
+        'type' => TrackableTask::TYPE_JOB,
+        'status' => TrackableTask::STATUS_QUEUED,
+        'progress_now' => 0,
+        'progress_max' => 0,
+        'attempts' => 0,
+        'exceptions' => '[]',
     ];
 
     public function __construct(array $attributes = [])
@@ -86,6 +98,18 @@ class TrackedTask extends Model implements TrackableTask
         return $this->update([
             'message' => $message,
         ]);
+    }
+
+    public function setExceptions(array $exceptions): bool
+    {
+        return $this->update([
+            'exceptions' => $exceptions,
+        ]);
+    }
+
+    public function addException(mixed $exception): bool
+    {
+        return $this->setExceptions(array_merge($this->exceptions, [$exception]));
     }
 
     public function setOutput(array $output): bool

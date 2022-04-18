@@ -126,6 +126,17 @@ class TrackableTasks
         return $task->update(array_merge($this->getJobDetails($job), $data));
     }
 
+    public function addTaskException($trackable, mixed $exception): bool
+    {
+        $job = $this->isEvent($trackable) ? $this->getEventJob($trackable) : $trackable;
+
+        if (! ($task = $this->getTask($job))) {
+            return false;
+        }
+
+        return $task->addException($exception);
+    }
+
     public function batch(mixed $jobs, string $name = null): PendingBatch
     {
         $jobs = Collection::wrap($jobs);

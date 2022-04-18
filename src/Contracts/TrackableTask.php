@@ -31,6 +31,10 @@ interface TrackableTask
 
     public function setMessage(string $message): bool;
 
+    public function setExceptions(array $exceptions): bool;
+
+    public function addException(mixed $exception): bool;
+
     public function setOutput(array $output): bool;
 
     public function markAsStarted(): bool;
