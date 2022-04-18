@@ -12,6 +12,7 @@ use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 /**
  * TrackedTask class
  *
+ * @property int $id
  * @property string $trackable_id
  * @property string $type
  * @property string $name
@@ -23,6 +24,7 @@ use ViicSlen\TrackableTasks\Contracts\TrackableTask;
  * @property int $progress_now
  * @property int $progress_max
  * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $started_at
  * @property \Illuminate\Support\Carbon|null $finished_at
  * @property-read int $progress_percentage
