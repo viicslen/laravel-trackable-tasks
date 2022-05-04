@@ -21,7 +21,7 @@ trait Trackable
     {
         $uses = array_flip(class_uses_recursive($this));
 
-        return isset($uses[Batchable::class]) ? [new TrackableBatch] : [];
+        return isset($uses[Batchable::class]) ? [new TrackableBatch()] : [];
     }
 
     public function getTaskId(): ?int

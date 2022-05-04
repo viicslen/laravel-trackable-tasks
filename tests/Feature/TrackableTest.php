@@ -14,8 +14,8 @@ use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithTracking;
 
 it('track batches', function () {
     $batch = TrackableTasks::batch([
-        new TestJobWithoutTracking,
-        new TestJobWithoutTracking,
+        new TestJobWithoutTracking(),
+        new TestJobWithoutTracking(),
     ], 'Test Batch')->dispatch();
 
     artisan('queue:work', ['--once' => 1]);
