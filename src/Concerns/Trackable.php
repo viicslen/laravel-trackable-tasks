@@ -2,17 +2,26 @@
 
 namespace ViicSlen\TrackableTasks\Concerns;
 
+use Illuminate\Bus\Batchable;
 use ViicSlen\TrackableTasks\Facades\TrackableTasks;
+use ViicSlen\TrackableTasks\Jobs\Middleware\TrackableBatch;
 
 trait Trackable
 {
     protected ?int $taskId = null;
-    protected int $progressNow = 0;
-    protected int $progressMax = 100;
+    public int $progressNow = 0;
+    public int $progressMax = 100;
 
     public function __construct()
     {
         $this->shouldTrack();
+    }
+
+    public function middleware(): array
+    {
+        $uses = array_flip(class_uses_recursive($this));
+
+        return isset($uses[Batchable::class]) ? [new TrackableBatch] : [];
     }
 
     public function getTaskId(): ?int

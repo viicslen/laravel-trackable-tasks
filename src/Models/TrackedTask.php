@@ -93,6 +93,31 @@ class TrackedTask extends Model implements TrackableTask
         return static::query()->where('created_at', '<=', now()->subDays($prunableAfter));
     }
 
+    public function setProgressNow(int $value): bool
+    {
+        return $this->update(['progress_now' => $value]);
+    }
+
+    public function getProgressNow(): int
+    {
+        return $this->progress_now;
+    }
+
+    public function setProgressMax(int $value): bool
+    {
+        return $this->update(['progress_max' => $value]);
+    }
+
+    public function getProgressMax(): int
+    {
+        return $this->progress_max;
+    }
+
+    public function getProgressPercentage(): int
+    {
+        return $this->progress_percentage;
+    }
+
     public function setMessage(string $message): bool
     {
         return $this->update([
@@ -100,11 +125,21 @@ class TrackedTask extends Model implements TrackableTask
         ]);
     }
 
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+
     public function setExceptions(array $exceptions): bool
     {
         return $this->update([
             'exceptions' => $exceptions,
         ]);
+    }
+
+    public function getExceptions(): array
+    {
+        return $this->exceptions;
     }
 
     public function addException(mixed $exception): bool
@@ -117,6 +152,11 @@ class TrackedTask extends Model implements TrackableTask
         return $this->update([
             'output' => $output,
         ]);
+    }
+
+    public function getOutput(): array
+    {
+        return $this->output;
     }
 
     public function markAsStarted(): bool

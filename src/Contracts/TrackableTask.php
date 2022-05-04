@@ -29,13 +29,29 @@ interface TrackableTask
         self::TYPE_BATCH,
     ];
 
+    public function setProgressNow(int $value): bool;
+
+    public function getProgressNow(): int;
+
+    public function setProgressMax(int $value): bool;
+
+    public function getProgressMax(): int;
+
+    public function getProgressPercentage(): int;
+
     public function setMessage(string $message): bool;
 
+    public function getMessage(): string;
+
     public function setExceptions(array $exceptions): bool;
+
+    public function getExceptions(): array;
 
     public function addException(mixed $exception): bool;
 
     public function setOutput(array $output): bool;
+
+    public function getOutput(): array;
 
     public function markAsStarted(): bool;
 

@@ -50,7 +50,7 @@ it('updates the message', function () {
     $task->setMessage('test-message');
     $task->refresh();
 
-    expect($task)->message->toEqual('test-message');
+    expect($task)->getMessage()->toEqual('test-message');
 });
 
 it('updates the output', function () {
@@ -59,7 +59,7 @@ it('updates the output', function () {
     $task->setOutput(['key1' => 'hello', 'key2' => 'world']);
     $task->refresh();
 
-    expect($task)->output->toEqual(['key1' => 'hello', 'key2' => 'world']);
+    expect($task)->getOutput()->toEqual(['key1' => 'hello', 'key2' => 'world']);
 });
 
 it('updates the exceptions', function () {
@@ -68,7 +68,20 @@ it('updates the exceptions', function () {
     $task->setExceptions(['hello', 'world']);
     $task->refresh();
 
-    expect($task)->exceptions->toEqual(['hello', 'world']);
+    expect($task)->getExceptions()->toEqual(['hello', 'world']);
+});
+
+it('updates the progress', function () {
+    $task = TrackedTask::factory()->create();
+
+    $task->setProgressMax(10);
+    $task->setProgressNow(5);
+    $task->refresh();
+
+    expect($task)
+        ->getProgressNow()->toEqual(5)
+        ->getProgressMax()->toEqual(10)
+        ->getProgressPercentage()->toEqual(50);
 });
 
 it('can add exception', function () {
