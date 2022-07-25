@@ -14,6 +14,7 @@ interface TrackableTask
     public const STATUS_FINISHED = 'finished';
     public const STATUS_FAILED = 'failed';
     public const STATUS_RETRYING = 'retrying';
+
     public const STATUSES = [
         self::STATUS_QUEUED,
         self::STATUS_STARTED,
@@ -24,9 +25,12 @@ interface TrackableTask
 
     public const TYPE_JOB = 'job';
     public const TYPE_BATCH = 'batch';
+    public const TYPE_MODEL = 'model';
+
     public const TYPES = [
         self::TYPE_JOB,
         self::TYPE_BATCH,
+        self::TYPE_MODEL,
     ];
 
     public function setProgressNow(int $value): bool;

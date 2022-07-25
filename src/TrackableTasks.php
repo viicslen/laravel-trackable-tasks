@@ -5,12 +5,15 @@ namespace ViicSlen\TrackableTasks;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
+use RuntimeException;
 use ViicSlen\TrackableTasks\Concerns\Trackable;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 
@@ -29,6 +32,14 @@ class TrackableTasks
             || $trackable instanceof JobProcessed
             || $trackable instanceof JobFailed
             || $trackable instanceof JobExceptionOccurred;
+    }
+
+    protected function isQueableOrEvent($trackable): bool
+    {
+        return $this->isEvent($trackable)
+            || $trackable instanceof ShouldQueue
+            || $trackable instanceof PendingBatch
+            || $trackable instanceof PendingDispatch;
     }
 
     protected function getEventJob(JobProcessing|JobProcessed|JobFailed|JobExceptionOccurred $event): ShouldQueue
@@ -61,6 +72,15 @@ class TrackableTasks
         ]);
     }
 
+    protected function getModelDetails(Model $model): array
+    {
+        return array_filter([
+            'trackable_id' => $model->getKey(),
+            'type' => TrackableTask::TYPE_MODEL,
+            'name' => $model->getMorphClass() ?? get_class($model),
+        ]);
+    }
+
     public function getTaskId($job): ?int
     {
         $uses = array_flip(class_uses_recursive($job));
@@ -89,7 +109,12 @@ class TrackableTasks
     {
         /** @var TrackableTask $class */
         $class = app(TrackableTask::class);
-        $data = array_merge($this->getJobDetails($trackable), $data);
+
+        $data = array_merge(match (true) {
+            $this->isQueableOrEvent($trackable) => $this->getJobDetails($trackable),
+            $trackable instanceof Model => $this->getModelDetails($trackable),
+            default => throw new RuntimeException(sprintf('Unsupported trackable type [%s]', get_class($trackable))),
+        }, $data);
 
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $class::on($this->connection)->create($data);
@@ -112,11 +137,7 @@ class TrackableTasks
             && method_exists($job, 'batching')
             && $job->batching()) {
 
-            /** @noinspection NullPointerExceptionInspection */
-            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
             if ($job->batch()->finished() || $job->batch()->cancelled()) {
-                /** @noinspection NullPointerExceptionInspection */
-                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
                 $data['status'] = $job->batch()->hasFailures() ? TrackableTask::STATUS_FAILED : TrackableTask::STATUS_FINISHED;
             } else {
                 unset($data['status']);
