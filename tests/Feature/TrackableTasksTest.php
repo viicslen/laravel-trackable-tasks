@@ -1,6 +1,7 @@
 <?php
 
 use function Pest\Laravel\assertDatabaseHas;
+
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 use ViicSlen\TrackableTasks\Facades\TrackableTasks;
 use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithFail;

@@ -1,6 +1,7 @@
 <?php
 
 use function Pest\Laravel\artisan;
+
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 use ViicSlen\TrackableTasks\Models\TrackedTask;
 

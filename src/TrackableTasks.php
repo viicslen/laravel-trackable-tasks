@@ -136,7 +136,6 @@ class TrackableTasks
             && in_array($data['status'], [TrackableTask::STATUS_FINISHED, TrackableTask::STATUS_FAILED], true)
             && method_exists($job, 'batching')
             && $job->batching()) {
-
             if ($job->batch()->finished() || $job->batch()->cancelled()) {
                 $data['status'] = $job->batch()->hasFailures() ? TrackableTask::STATUS_FAILED : TrackableTask::STATUS_FINISHED;
             } else {
