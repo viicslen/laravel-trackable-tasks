@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-trackable-tasks` will be documented in this file.
 
+## v0.1.1 - 2022-08-08
+
+### What's Changed
+
+- Bump dependabot/fetch-metadata from 1.3.1 to 1.3.3 by @dependabot in https://github.com/viicslen/laravel-trackable-tasks/pull/2
+
+**Full Changelog**: https://github.com/viicslen/laravel-trackable-tasks/compare/v0.1.0...v0.1.1
+
 ## v0.1.0 - 2022-05-04
 
 ## What's Changed
