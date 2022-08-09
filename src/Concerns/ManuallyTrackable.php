@@ -10,6 +10,16 @@ trait ManuallyTrackable
     public int $progressNow = 0;
     public int $progressMax = 100;
 
+    public function getTask(): TrackableTask
+    {
+        return $this->task;
+    }
+
+    public function setTask(TrackableTask $task): void
+    {
+        $this->task = $task;
+    }
+
     public function getTaskId(): ?int
     {
         return $this->task->getKey();
