@@ -11,6 +11,7 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use ViicSlen\TrackableTasks\Contracts\ManagesTrackedEvents;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
+use ViicSlen\TrackableTasks\Observers\TrackableTaskObserver;
 
 class TrackableTasksServiceProvider extends PackageServiceProvider
 {
@@ -41,6 +42,9 @@ class TrackableTasksServiceProvider extends PackageServiceProvider
 
         /** @var \ViicSlen\TrackableTasks\Contracts\ManagesTrackedEvents $eventManager */
         $eventManager = app(ManagesTrackedEvents::class);
+
+        // Add task observer
+        app(TrackableTask::class)::observe(TrackableTaskObserver::class);
 
         // Add Event listeners
         $queueManger->before(fn (JobProcessing $event) => $eventManager->before($event));
