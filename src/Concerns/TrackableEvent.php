@@ -21,6 +21,9 @@ trait TrackableEvent
     public function __construct(
         public TrackableTask $trackableTask
     ) {
-        $this->trackableTask = $trackableTask->makeHidden(['exceptions']);
+        $this->trackableTask = $trackableTask->makeHidden([
+            'exceptions',
+            'output',
+        ]);
     }
 }
