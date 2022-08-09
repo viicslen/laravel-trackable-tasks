@@ -11,6 +11,7 @@ interface TrackableTask
 {
     public const STATUS_QUEUED = 'queued';
     public const STATUS_STARTED = 'started';
+    public const STATUS_PAUSED = 'paused';
     public const STATUS_FINISHED = 'finished';
     public const STATUS_FAILED = 'failed';
     public const STATUS_RETRYING = 'retrying';
@@ -18,6 +19,7 @@ interface TrackableTask
     public const STATUSES = [
         self::STATUS_QUEUED,
         self::STATUS_STARTED,
+        self::STATUS_PAUSED,
         self::STATUS_FINISHED,
         self::STATUS_FAILED,
         self::STATUS_RETRYING,
