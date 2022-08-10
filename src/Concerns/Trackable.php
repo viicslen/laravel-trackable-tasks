@@ -2,10 +2,6 @@
 
 namespace ViicSlen\TrackableTasks\Concerns;
 
-use Illuminate\Bus\Batchable;
-use ViicSlen\TrackableTasks\Facades\TrackableTasks;
-use ViicSlen\TrackableTasks\Jobs\Middleware\TrackableBatch;
-
 trait Trackable
 {
     public int $progressNow = 0;
