@@ -67,6 +67,7 @@ return [
     | changes.
     |
     */
+
     'events' => [
         'retrieved' => ViicSlen\TrackableTasks\Events\TrackableTaskRetrieved::class,
         'creating' => ViicSlen\TrackableTasks\Events\TrackableTaskCreating::class,
