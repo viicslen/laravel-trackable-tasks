@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-trackable-tasks` will be documented in this file.
 
+## v0.3.1 - 2022-08-10
+
+**Full Changelog**: https://github.com/viicslen/laravel-trackable-tasks/compare/v0.3.0...v0.3.1
+
 ## v0.3.0 - 2022-08-10
 
 ### What Changed
@@ -27,49 +31,65 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - - `TrackableTaskStatusUpdated`: Dispatched when the status of a task is changed, and will contain the whole task object except exceptions and output.
 - 
 - 
+- 
 - - `TrackableTaskExceptionAdded`: Dispatched when a new exception is added. It will contain the task ID and the exception message.
+- 
 - 
 - 
 - - `TrackableTaskCreated`
 - 
 - 
+- 
 - - `TrackableTaskCreating`
+- 
 - 
 - 
 - - `TrackableTaskDeleted`
 - 
 - 
+- 
 - - `TrackableTaskDeleting`
+- 
 - 
 - 
 - - `TrackableTaskForceDeleted`
 - 
 - 
+- 
 - - `TrackableTaskReplicating`
+- 
 - 
 - 
 - - `TrackableTaskRestored`
 - 
 - 
+- 
 - - `TrackableTaskRestoring`
+- 
 - 
 - 
 - - `TrackableTaskRetrieved`
 - 
 - 
+- 
 - - `TrackableTaskSaved`
+- 
 - 
 - 
 - - `TrackableTaskSaving`
 - 
 - 
+- 
 - - `TrackableTaskTrashed`
+- 
 - 
 - 
 - - `TrackableTaskUpdated`
 - 
 - 
+- 
 - - `TrackableTaskUpdating`
+- 
 - 
 - 
 - 
