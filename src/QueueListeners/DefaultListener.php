@@ -1,6 +1,6 @@
 <?php
 
-namespace ViicSlen\TrackableTasks\EventManagers;
+namespace ViicSlen\TrackableTasks\QueueListeners;
 
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobFailed;
@@ -8,11 +8,11 @@ use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Carbon;
 use ViicSlen\TrackableTasks\Concerns\TrackAutomatically;
-use ViicSlen\TrackableTasks\Contracts\ManagesTrackedEvents;
+use ViicSlen\TrackableTasks\Contracts\ListensToQueueEvents;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 use ViicSlen\TrackableTasks\Facades\TrackableTasks;
 
-class DefaultEventManager implements ManagesTrackedEvents
+class DefaultListener implements ListensToQueueEvents
 {
     public function before(JobProcessing $event): void
     {

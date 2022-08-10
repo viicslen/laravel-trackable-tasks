@@ -15,6 +15,7 @@ use ViicSlen\TrackableTasks\Events\TrackableTaskRestoring;
 use ViicSlen\TrackableTasks\Events\TrackableTaskRetrieved;
 use ViicSlen\TrackableTasks\Events\TrackableTaskSaved;
 use ViicSlen\TrackableTasks\Events\TrackableTaskSaving;
+use ViicSlen\TrackableTasks\Events\TrackableTaskStatusUpdated;
 use ViicSlen\TrackableTasks\Events\TrackableTaskTrashed;
 use ViicSlen\TrackableTasks\Events\TrackableTaskUpdated;
 use ViicSlen\TrackableTasks\Events\TrackableTaskUpdating;
@@ -29,7 +30,7 @@ class TrackableTaskObserver
      */
     public function retrieved(TrackableTask $task): void
     {
-        TrackableTaskRetrieved::dispatch($task);
+        app(config('trackable-tasks.events.retrieved', TrackableTaskRetrieved::class))::dispatch($task);
     }
 
     /**
@@ -40,7 +41,7 @@ class TrackableTaskObserver
      */
     public function creating(TrackableTask $task): void
     {
-        TrackableTaskCreating::dispatch($task);
+        app(config('trackable-tasks.events.creating', TrackableTaskCreating::class))::dispatch($task);
     }
 
     /**
@@ -51,7 +52,7 @@ class TrackableTaskObserver
      */
     public function created(TrackableTask $task): void
     {
-        TrackableTaskCreated::dispatch($task);
+        app(config('trackable-tasks.events.created', TrackableTaskCreated::class))::dispatch($task);
     }
 
     /**
@@ -62,7 +63,7 @@ class TrackableTaskObserver
      */
     public function updating(TrackableTask $task): void
     {
-        TrackableTaskUpdating::dispatch($task);
+        app(config('trackable-tasks.events.updating', TrackableTaskUpdating::class))::dispatch($task);
     }
 
     /**
@@ -73,10 +74,10 @@ class TrackableTaskObserver
      */
     public function updated(TrackableTask $task): void
     {
-        TrackableTaskUpdated::dispatch($task);
+        app(config('trackable-tasks.events.updated', TrackableTaskUpdated::class))::dispatch($task);
 
         if ($task->wasChanged('status')) {
-            TrackableTaskUpdated::dispatch($task);
+            app(config('trackable-tasks.events.status_updated', TrackableTaskStatusUpdated::class))::dispatch($task);
         }
     }
 
@@ -88,13 +89,13 @@ class TrackableTaskObserver
      */
     public function saving(TrackableTask $task): void
     {
-        TrackableTaskSaving::dispatch($task);
+        app(config('trackable-tasks.events.saving', TrackableTaskSaving::class))::dispatch($task);
 
         if ($task->isDirty('exceptions')) {
             $changes = array_intersect($task->getExceptions(), $task->getOriginal('exceptions'));
 
             foreach ($changes as $exception) {
-                TrackableTaskExceptionAdded::dispatch($task->id, $exception);
+                app(config('trackable-tasks.events.exception_added', TrackableTaskExceptionAdded::class))::dispatch($task, $exception);
             }
         }
     }
@@ -107,7 +108,7 @@ class TrackableTaskObserver
      */
     public function saved(TrackableTask $task): void
     {
-        TrackableTaskSaved::dispatch($task);
+        app(config('trackable-tasks.events.saved', TrackableTaskSaved::class))::dispatch($task);
     }
 
     /**
@@ -118,7 +119,7 @@ class TrackableTaskObserver
      */
     public function deleting(TrackableTask $task): void
     {
-        TrackableTaskDeleting::dispatch($task);
+        app(config('trackable-tasks.events.deleting', TrackableTaskDeleting::class))::dispatch($task);
     }
 
     /**
@@ -129,7 +130,7 @@ class TrackableTaskObserver
      */
     public function deleted(TrackableTask $task): void
     {
-        TrackableTaskDeleted::dispatch($task);
+        app(config('trackable-tasks.events.deleted', TrackableTaskDeleted::class))::dispatch($task);
     }
 
     /**
@@ -140,7 +141,7 @@ class TrackableTaskObserver
      */
     public function trashed(TrackableTask $task): void
     {
-        TrackableTaskTrashed::dispatch($task);
+        app(config('trackable-tasks.events.trashed', TrackableTaskTrashed::class))::dispatch($task);
     }
 
     /**
@@ -151,7 +152,7 @@ class TrackableTaskObserver
      */
     public function forceDeleted(TrackableTask $task): void
     {
-        TrackableTaskForceDeleted::dispatch($task);
+        app(config('trackable-tasks.events.force_deleted', TrackableTaskForceDeleted::class))::dispatch($task);
     }
 
     /**
@@ -162,7 +163,7 @@ class TrackableTaskObserver
      */
     public function restoring(TrackableTask $task): void
     {
-        TrackableTaskRestoring::dispatch($task);
+        app(config('trackable-tasks.events.restoring', TrackableTaskRestoring::class))::dispatch($task);
     }
 
     /**
@@ -173,7 +174,7 @@ class TrackableTaskObserver
      */
     public function restored(TrackableTask $task): void
     {
-        TrackableTaskRestored::dispatch($task);
+        app(config('trackable-tasks.events.restored', TrackableTaskRestored::class))::dispatch($task);
     }
 
     /**
@@ -184,6 +185,6 @@ class TrackableTaskObserver
      */
     public function replicating(TrackableTask $task): void
     {
-        TrackableTaskReplicating::dispatch($task);
+        app(config('trackable-tasks.events.replicating', TrackableTaskReplicating::class))::dispatch($task);
     }
 }

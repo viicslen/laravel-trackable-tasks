@@ -4,15 +4,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Tracked Task Event Manager
+    | Tracked Task Queue Listener
     |--------------------------------------------------------------------------
     |
-    | The event manager which updates the tracked task model when its status
+    | The queue listener which updates the tracked task model when its status
     | changes.
     |
     */
 
-    'event_manager' => ViicSlen\TrackableTasks\EventManagers\DefaultEventManager::class,
+    'queue_listener' => ViicSlen\TrackableTasks\QueueListeners\DefaultListener::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -56,5 +56,33 @@ return [
         'connection' => null,
 
         'table' => 'tracked_tasks',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tracked Task Model Events
+    |--------------------------------------------------------------------------
+    |
+    | The event manager which updates the tracked task model when its status
+    | changes.
+    |
+    */
+    'events' => [
+        'retrieved' => ViicSlen\TrackableTasks\Events\TrackableTaskRetrieved::class,
+        'creating' => ViicSlen\TrackableTasks\Events\TrackableTaskCreating::class,
+        'created' => ViicSlen\TrackableTasks\Events\TrackableTaskCreated::class,
+        'updating' => ViicSlen\TrackableTasks\Events\TrackableTaskUpdating::class,
+        'updated' => ViicSlen\TrackableTasks\Events\TrackableTaskUpdated::class,
+        'saving' => ViicSlen\TrackableTasks\Events\TrackableTaskSaving::class,
+        'saved' => ViicSlen\TrackableTasks\Events\TrackableTaskSaved::class,
+        'deleting' => ViicSlen\TrackableTasks\Events\TrackableTaskDeleting::class,
+        'deleted' => ViicSlen\TrackableTasks\Events\TrackableTaskDeleted::class,
+        'restoring' => ViicSlen\TrackableTasks\Events\TrackableTaskRestoring::class,
+        'restored' => ViicSlen\TrackableTasks\Events\TrackableTaskRestored::class,
+        'force_deleting' => ViicSlen\TrackableTasks\Events\TrackableTaskForceDeleted::class,
+        'trashed' => ViicSlen\TrackableTasks\Events\TrackableTaskTrashed::class,
+        'replicating' => ViicSlen\TrackableTasks\Events\TrackableTaskReplicating::class,
+        'exception_added' => ViicSlen\TrackableTasks\Events\TrackableTaskExceptionAdded::class,
+        'status_updated' => ViicSlen\TrackableTasks\Events\TrackableTaskStatusUpdated::class,
     ],
 ];

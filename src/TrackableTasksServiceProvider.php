@@ -9,7 +9,7 @@ use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\QueueManager;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use ViicSlen\TrackableTasks\Contracts\ManagesTrackedEvents;
+use ViicSlen\TrackableTasks\Contracts\ListensToQueueEvents;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 use ViicSlen\TrackableTasks\Observers\TrackableTaskObserver;
 
@@ -32,7 +32,7 @@ class TrackableTasksServiceProvider extends PackageServiceProvider
     {
         $this->app->bind('trackable_tasks', fn () => new TrackableTasks());
         $this->app->bind(TrackableTask::class, config('trackable-tasks.model'));
-        $this->app->bind(ManagesTrackedEvents::class, config('trackable-tasks.event_manager'));
+        $this->app->bind(ListensToQueueEvents::class, config('trackable-tasks.queue_listener'));
     }
 
     public function packageBooted(): void
@@ -40,8 +40,8 @@ class TrackableTasksServiceProvider extends PackageServiceProvider
         /** @var \Illuminate\Queue\QueueManager $queueManger */
         $queueManger = app(QueueManager::class);
 
-        /** @var \ViicSlen\TrackableTasks\Contracts\ManagesTrackedEvents $eventManager */
-        $eventManager = app(ManagesTrackedEvents::class);
+        /** @var \ViicSlen\TrackableTasks\Contracts\ListensToQueueEvents $eventManager */
+        $eventManager = app(ListensToQueueEvents::class);
 
         // Add task observer
         app(TrackableTask::class)::observe(TrackableTaskObserver::class);

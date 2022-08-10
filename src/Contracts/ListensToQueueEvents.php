@@ -7,7 +7,7 @@ use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 
-interface ManagesTrackedEvents
+interface ListensToQueueEvents
 {
     public function before(JobProcessing $event): void;
 

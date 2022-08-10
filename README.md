@@ -32,12 +32,30 @@ This is the contents of the published config file:
 
 ```php
 return [
-    'event_manager' => ViicSlen\TrackableTasks\EventManagers\DefaultEventManager::class,
+    'queue_listener' => ViicSlen\TrackableTasks\QueueListeners\DefaultListener::class,
     'model' => ViicSlen\TrackableTasks\Models\TrackedTask::class,
     'prunable_after' => 90,
     'database' => [
         'connection' => null,
         'table' => 'tracked_task',
+    ],
+    'events' => [
+        'retrieved' => ViicSlen\TrackableTasks\Events\TrackableTaskRetrieved::class,
+        'creating' => ViicSlen\TrackableTasks\Events\TrackableTaskCreating::class,
+        'created' => ViicSlen\TrackableTasks\Events\TrackableTaskCreated::class,
+        'updating' => ViicSlen\TrackableTasks\Events\TrackableTaskUpdating::class,
+        'updated' => ViicSlen\TrackableTasks\Events\TrackableTaskUpdated::class,
+        'saving' => ViicSlen\TrackableTasks\Events\TrackableTaskSaving::class,
+        'saved' => ViicSlen\TrackableTasks\Events\TrackableTaskSaved::class,
+        'deleting' => ViicSlen\TrackableTasks\Events\TrackableTaskDeleting::class,
+        'deleted' => ViicSlen\TrackableTasks\Events\TrackableTaskDeleted::class,
+        'restoring' => ViicSlen\TrackableTasks\Events\TrackableTaskRestoring::class,
+        'restored' => ViicSlen\TrackableTasks\Events\TrackableTaskRestored::class,
+        'force_deleting' => ViicSlen\TrackableTasks\Events\TrackableTaskForceDeleted::class,
+        'trashed' => ViicSlen\TrackableTasks\Events\TrackableTaskTrashed::class,
+        'replicating' => ViicSlen\TrackableTasks\Events\TrackableTaskReplicating::class,
+        'exception_added' => ViicSlen\TrackableTasks\Events\TrackableTaskExceptionAdded::class,
+        'status_updated' => ViicSlen\TrackableTasks\Events\TrackableTaskStatusUpdated::class,
     ],
 ];
 ```
