@@ -16,6 +16,25 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Tracked Task Types
+    |--------------------------------------------------------------------------
+    |
+    | The types of tracked tasks that can be created. Used to get details about
+    | the tracked task.
+    |
+    | It must implement the 'ViicSlen\TrackableTasks\Contracts\TrackableType'
+    | contract.
+    |
+    */
+
+    'types' => [
+        ViicSlen\TrackableTasks\Types\TrackableJob::TYPE => ViicSlen\TrackableTasks\Types\TrackableJob::class,
+        ViicSlen\TrackableTasks\Types\TrackableBatch::TYPE => ViicSlen\TrackableTasks\Types\TrackableBatch::class,
+        ViicSlen\TrackableTasks\Types\TrackableModel::TYPE => ViicSlen\TrackableTasks\Types\TrackableModel::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Tracked Task Model
     |--------------------------------------------------------------------------
     |
