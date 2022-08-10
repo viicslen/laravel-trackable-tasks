@@ -14,7 +14,7 @@ use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use RuntimeException;
-use ViicSlen\TrackableTasks\Concerns\Trackable;
+use ViicSlen\TrackableTasks\Concerns\TrackAutomatically;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 
 class TrackableTasks
@@ -85,7 +85,7 @@ class TrackableTasks
     {
         $uses = array_flip(class_uses_recursive($job));
 
-        return isset($uses[Trackable::class]) || method_exists($job, 'getTaskId')
+        return isset($uses[TrackAutomatically::class]) || method_exists($job, 'getTaskId')
             ? $job->getTaskId()
             : null;
     }
@@ -165,7 +165,7 @@ class TrackableTasks
         $batch = Bus::batch($jobs->map(function ($job) use ($task) {
             $uses = array_flip(class_uses_recursive($job));
 
-            if (isset($uses[Trackable::class]) && method_exists($job, 'setTaskId')) {
+            if (isset($uses[TrackAutomatically::class]) && method_exists($job, 'setTaskId')) {
                 $job->setTaskId($task->id);
             }
 

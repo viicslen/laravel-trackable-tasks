@@ -7,14 +7,14 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use ViicSlen\TrackableTasks\Concerns\Trackable;
+use ViicSlen\TrackableTasks\Concerns\TrackAutomatically;
 
 class TestJobWithExceptionRecording implements ShouldQueue
 {
     use InteractsWithQueue;
     use Queueable;
     use Dispatchable;
-    use Trackable;
+    use TrackAutomatically;
     use Batchable;
 
     public function handle(): void

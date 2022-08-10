@@ -8,45 +8,8 @@ use ViicSlen\TrackableTasks\Jobs\Middleware\TrackableBatch;
 
 trait Trackable
 {
-    protected ?int $taskId = null;
     public int $progressNow = 0;
     public int $progressMax = 100;
-
-    public function __construct()
-    {
-        $this->shouldTrack();
-    }
-
-    public function middleware(): array
-    {
-        $uses = array_flip(class_uses_recursive($this));
-
-        return isset($uses[Batchable::class]) ? [new TrackableBatch()] : [];
-    }
-
-    public function getTaskId(): ?int
-    {
-        return $this->taskId;
-    }
-
-    public function setTaskId(int $taskId): void
-    {
-        $this->taskId = $taskId;
-    }
-
-    protected function shouldTrack(array $data = []): void
-    {
-        if (isset($this->shouldTrack) && $this->shouldTrack === false) {
-            return;
-        }
-
-        $this->taskId = TrackableTasks::createTask($this, $data)->getKey();
-    }
-
-    protected function updateTask(array $data): bool
-    {
-        return TrackableTasks::updateTask($this, $data);
-    }
 
     protected function taskSetProgressMax(int $value): bool
     {
@@ -83,11 +46,6 @@ trait Trackable
     protected function taskSetExceptions(array $exceptions): bool
     {
         return $this->updateTask(['exceptions' => $exceptions]);
-    }
-
-    protected function taskRecordException(mixed $exception): bool
-    {
-        return TrackableTasks::addTaskException($this, $exception);
     }
 
     protected function taskSetOutput(array $output): bool

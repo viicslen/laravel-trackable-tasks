@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use ViicSlen\TrackableTasks\Concerns\Trackable;
+use ViicSlen\TrackableTasks\Concerns\TrackAutomatically;
 
 class TestJobWithoutTracking implements ShouldQueue
 {
@@ -15,7 +15,7 @@ class TestJobWithoutTracking implements ShouldQueue
     use Queueable;
     use Dispatchable;
     use Batchable;
-    use Trackable;
+    use TrackAutomatically;
 
     protected bool $shouldTrack = false;
 
