@@ -79,7 +79,9 @@ class DefaultEventManager implements ManagesTrackedEvents
 
     protected function canBeTracked(JobProcessing|JobProcessed|JobFailed|JobExceptionOccurred $event): bool
     {
-        $uses = class_uses_recursive($event->job);
+        $payload = $event->job->payload();
+        $job = unserialize($payload['data']['command'], ['allowed_classes' => true]);
+        $uses = class_uses_recursive($job);
 
         return isset($uses[TrackAutomatically::class]);
     }
