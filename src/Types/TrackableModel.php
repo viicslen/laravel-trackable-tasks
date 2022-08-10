@@ -2,14 +2,14 @@
 
 namespace ViicSlen\TrackableTasks\Types;
 
-
 class TrackableModel extends TrackableType
 {
     public const TYPE = 'model';
 
     public function __construct(
         public readonly mixed $trackable,
-    ) {}
+    ) {
+    }
 
     public function getKey(): mixed
     {

@@ -2,7 +2,6 @@
 
 namespace ViicSlen\TrackableTasks\Types;
 
-
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobFailed;
@@ -17,7 +16,8 @@ class TrackableJob extends TrackableType
 {
     public const TYPE = 'job';
 
-    public function __construct(mixed $trackable) {
+    public function __construct(mixed $trackable)
+    {
         if ($this->isEvent($trackable)) {
             $trackable = $this->getEventJob($trackable);
         }

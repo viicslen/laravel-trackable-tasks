@@ -12,14 +12,15 @@ abstract class TrackableType implements Contract
     public const TYPE = '';
 
     /**
-     * @var T $trackable
+     * @var T
      */
     public readonly mixed $trackable;
 
     /**
      * @param  T  $trackable
      */
-    public function __construct(mixed $trackable) {
+    public function __construct(mixed $trackable)
+    {
         $this->trackable = $trackable;
     }
 
@@ -43,7 +44,7 @@ abstract class TrackableType implements Contract
         return null;
     }
 
-    public function toArray() :array
+    public function toArray(): array
     {
         return [
             'trackable_id' => $this->getKey(),

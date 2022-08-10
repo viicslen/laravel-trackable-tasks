@@ -2,7 +2,6 @@
 
 namespace ViicSlen\TrackableTasks\Types;
 
-
 use Illuminate\Bus\Batch;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\PendingBatch;
