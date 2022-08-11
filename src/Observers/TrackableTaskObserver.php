@@ -112,7 +112,7 @@ class TrackableTaskObserver
             $changes = array_intersect($task->getExceptions(), $task->getOriginal('exceptions'));
 
             foreach ($changes as $exception) {
-                $this->dispatchEvent('exception_added', TrackableTaskExceptionAdded::class, [$task, $exception]);
+                $this->dispatchEvent('exception_added', TrackableTaskExceptionAdded::class, [$task->getKey(), $exception]);
             }
         }
     }
