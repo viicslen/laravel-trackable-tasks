@@ -77,7 +77,7 @@ class TrackableTasks
         return array_filter([
             'trackable_id' => $model->getKey(),
             'type' => TrackableTask::TYPE_MODEL,
-            'name' => $model->getMorphClass() ?? get_class($model),
+            'name' => $model->getMorphClass(),
         ]);
     }
 
