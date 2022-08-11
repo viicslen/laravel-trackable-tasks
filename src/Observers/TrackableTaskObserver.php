@@ -23,168 +23,185 @@ use ViicSlen\TrackableTasks\Events\TrackableTaskUpdating;
 class TrackableTaskObserver
 {
     /**
-     * Handle the User "retrieved" event.
+     * Dispatch the events for the tracked task.
+     *
+     * @param  string  $key
+     * @param  string  $default
+     * @param  array  $args
+     * @return void
+     */
+    protected function dispatchEvent(string $key, string $default, array $args): void
+    {
+        $event = config("trackable-tasks.events.$key", $default);
+
+        if ($event) {
+            event(new $event(...$args));
+        }
+    }
+
+    /**
+     * Handle the Task "retrieved" event.
      *
      * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
      * @return void
      */
     public function retrieved(TrackableTask $task): void
     {
-        app(config('trackable-tasks.events.retrieved', TrackableTaskRetrieved::class))::dispatch($task);
+        $this->dispatchEvent('retrieved', TrackableTaskRetrieved::class, [$task]);
     }
 
     /**
-     * Handle the User "creating" event.
+     * Handle the Task "creating" event.
      *
      * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
      * @return void
      */
     public function creating(TrackableTask $task): void
     {
-        app(config('trackable-tasks.events.creating', TrackableTaskCreating::class))::dispatch($task);
+        $this->dispatchEvent('creating', TrackableTaskCreating::class, [$task]);
     }
 
     /**
-     * Handle the User "created" event.
+     * Handle the Task "created" event.
      *
      * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
      * @return void
      */
     public function created(TrackableTask $task): void
     {
-        app(config('trackable-tasks.events.created', TrackableTaskCreated::class))::dispatch($task);
+        $this->dispatchEvent('created', TrackableTaskCreated::class, [$task]);
     }
 
     /**
-     * Handle the User "updating" event.
+     * Handle the Task "updating" event.
      *
      * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
      * @return void
      */
     public function updating(TrackableTask $task): void
     {
-        app(config('trackable-tasks.events.updating', TrackableTaskUpdating::class))::dispatch($task);
+        $this->dispatchEvent('updating', TrackableTaskUpdating::class, [$task]);
     }
 
     /**
-     * Handle the User "updated" event.
+     * Handle the Task "updated" event.
      *
      * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
      * @return void
      */
     public function updated(TrackableTask $task): void
     {
-        app(config('trackable-tasks.events.updated', TrackableTaskUpdated::class))::dispatch($task);
+        $this->dispatchEvent('updated', TrackableTaskUpdated::class, [$task]);
 
         if ($task->wasChanged('status')) {
-            app(config('trackable-tasks.events.status_updated', TrackableTaskStatusUpdated::class))::dispatch($task);
+            $this->dispatchEvent('status_updated', TrackableTaskStatusUpdated::class, [$task]);
         }
     }
 
     /**
-     * Handle the User "saving" event.
+     * Handle the Task "saving" event.
      *
      * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
      * @return void
      */
     public function saving(TrackableTask $task): void
     {
-        app(config('trackable-tasks.events.saving', TrackableTaskSaving::class))::dispatch($task);
+        $this->dispatchEvent('saving', TrackableTaskSaving::class, [$task]);
 
         if ($task->isDirty('exceptions')) {
             $changes = array_intersect($task->getExceptions(), $task->getOriginal('exceptions'));
 
             foreach ($changes as $exception) {
-                app(config('trackable-tasks.events.exception_added', TrackableTaskExceptionAdded::class))::dispatch($task, $exception);
+                $this->dispatchEvent('exception_added', TrackableTaskExceptionAdded::class, [$task, $exception]);
             }
         }
     }
 
     /**
-     * Handle the User "saved" event.
+     * Handle the Task "saved" event.
      *
      * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
      * @return void
      */
     public function saved(TrackableTask $task): void
     {
-        app(config('trackable-tasks.events.saved', TrackableTaskSaved::class))::dispatch($task);
+        $this->dispatchEvent('saved', TrackableTaskSaved::class, [$task]);
     }
 
     /**
-     * Handle the User "deleting" event.
+     * Handle the Task "deleting" event.
      *
      * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
      * @return void
      */
     public function deleting(TrackableTask $task): void
     {
-        app(config('trackable-tasks.events.deleting', TrackableTaskDeleting::class))::dispatch($task);
+        $this->dispatchEvent('deleting', TrackableTaskDeleting::class, [$task]);
     }
 
     /**
-     * Handle the User "deleted" event.
+     * Handle the Task "deleted" event.
      *
      * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
      * @return void
      */
     public function deleted(TrackableTask $task): void
     {
-        app(config('trackable-tasks.events.deleted', TrackableTaskDeleted::class))::dispatch($task);
+        $this->dispatchEvent('deleted', TrackableTaskDeleted::class, [$task]);
     }
 
     /**
-     * Handle the User "trashed" event.
+     * Handle the Task "trashed" event.
      *
      * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
      * @return void
      */
     public function trashed(TrackableTask $task): void
     {
-        app(config('trackable-tasks.events.trashed', TrackableTaskTrashed::class))::dispatch($task);
+        $this->dispatchEvent('trashed', TrackableTaskTrashed::class, [$task]);
     }
 
     /**
-     * Handle the User "forceDeleted" event.
+     * Handle the Task "forceDeleted" event.
      *
      * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
      * @return void
      */
     public function forceDeleted(TrackableTask $task): void
     {
-        app(config('trackable-tasks.events.force_deleted', TrackableTaskForceDeleted::class))::dispatch($task);
+        $this->dispatchEvent('force_deleted', TrackableTaskForceDeleted::class, [$task]);
     }
 
     /**
-     * Handle the User "restoring" event.
+     * Handle the Task "restoring" event.
      *
      * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
      * @return void
      */
     public function restoring(TrackableTask $task): void
     {
-        app(config('trackable-tasks.events.restoring', TrackableTaskRestoring::class))::dispatch($task);
+        $this->dispatchEvent('restoring', TrackableTaskRestoring::class, [$task]);
     }
 
     /**
-     * Handle the User "restored" event.
+     * Handle the Task "restored" event.
      *
      * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
      * @return void
      */
     public function restored(TrackableTask $task): void
     {
-        app(config('trackable-tasks.events.restored', TrackableTaskRestored::class))::dispatch($task);
+        $this->dispatchEvent('restored', TrackableTaskRestored::class, [$task]);
     }
 
     /**
-     * Handle the User "replicating" event.
+     * Handle the Task "replicating" event.
      *
      * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
      * @return void
      */
     public function replicating(TrackableTask $task): void
     {
-        app(config('trackable-tasks.events.replicating', TrackableTaskReplicating::class))::dispatch($task);
+        $this->dispatchEvent('replicating', TrackableTaskReplicating::class, [$task]);
     }
 }
