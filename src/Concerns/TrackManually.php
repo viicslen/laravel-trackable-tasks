@@ -7,7 +7,7 @@ use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 
 trait TrackManually
 {
-    use Trackable;
+    use Trackable { taskClearMessage as baseTaskClearMessage; }
 
     protected TrackableTask $task;
 
@@ -60,6 +60,17 @@ trait TrackManually
         }
 
         $this->task->setAttribute('message', $message);
+
+        return $this->taskSetStatus($status);
+    }
+
+    protected function taskClearMessage(?string $status = null): bool
+    {
+        if (! $status) {
+            return $this->baseTaskClearMessage();
+        }
+
+        $this->task->setAttribute('message', null);
 
         return $this->taskSetStatus($status);
     }
