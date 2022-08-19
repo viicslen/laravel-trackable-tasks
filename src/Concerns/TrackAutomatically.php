@@ -43,12 +43,12 @@ trait TrackAutomatically
         $this->taskId = TrackableTasks::createTask($this, $data)->getKey();
     }
 
-    protected function updateTask(array $data): bool
+    protected function taskUpdate(array $data): bool
     {
         return TrackableTasks::updateTask($this, $data);
     }
 
-    protected function refreshTask(): void
+    protected function taskRefresh(): void
     {
         $task = TrackableTasks::getTask($this);
 

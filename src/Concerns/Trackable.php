@@ -11,7 +11,7 @@ trait Trackable
     {
         $this->progressMax = $value;
 
-        return $this->updateTask(['progress_max' => $value]);
+        return $this->taskUpdate(['progress_max' => $value]);
     }
 
     protected function taskSetProgressNow(int $value, int $every = 1): bool
@@ -19,7 +19,7 @@ trait Trackable
         $this->progressNow = $value;
 
         return ! ($value % $every === 0 || $value === $this->progressMax)
-            || $this->updateTask(['progress_now' => $value]);
+            || $this->taskUpdate(['progress_now' => $value]);
     }
 
     protected function taskIncrementProgress(int $offset = 1, int $every = 1): bool
@@ -36,21 +36,21 @@ trait Trackable
 
     protected function taskSetMessage(string $message): bool
     {
-        return $this->updateTask(['message' => $message]);
+        return $this->taskUpdate(['message' => $message]);
     }
 
     protected function taskClearMessage(): bool
     {
-        return $this->updateTask(['message' => null]);
+        return $this->taskUpdate(['message' => null]);
     }
 
     protected function taskSetExceptions(array $exceptions): bool
     {
-        return $this->updateTask(['exceptions' => $exceptions]);
+        return $this->taskUpdate(['exceptions' => $exceptions]);
     }
 
     protected function taskSetOutput(array $output): bool
     {
-        return $this->updateTask(['output' => $output]);
+        return $this->taskUpdate(['output' => $output]);
     }
 }
