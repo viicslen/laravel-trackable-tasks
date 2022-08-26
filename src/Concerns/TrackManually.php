@@ -54,7 +54,7 @@ trait TrackManually
 
         $this->taskUpdate([
             'status' => TrackableTask::STATUS_STARTED,
-            'started_at' => now(),
+            'started_at' => $this->task->started_at ?? now(),
         ]);
     }
 
