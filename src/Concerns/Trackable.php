@@ -2,10 +2,18 @@
 
 namespace ViicSlen\TrackableTasks\Concerns;
 
+use Throwable;
+
 trait Trackable
 {
     public int $progressNow = 0;
     public int $progressMax = 100;
+
+    public function failed(Throwable $exception): void
+    {
+        $this->taskSetMessage($exception->getMessage());
+        $this->taskRecordException($exception->getMessage());
+    }
 
     protected function taskSetProgressMax(int $value): bool
     {

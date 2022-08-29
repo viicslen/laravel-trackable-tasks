@@ -3,6 +3,7 @@
 namespace ViicSlen\TrackableTasks\Concerns;
 
 use InvalidArgumentException;
+use Throwable;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 
 trait TrackManually
@@ -12,6 +13,12 @@ trait TrackManually
     }
 
     protected TrackableTask $task;
+
+    public function failed(Throwable $exception): void
+    {
+        $this->taskSetMessage($exception->getMessage(), TrackableTask::STATUS_FAILED);
+        $this->taskRecordException($exception->getMessage());
+    }
 
     public function getTask(): TrackableTask
     {
