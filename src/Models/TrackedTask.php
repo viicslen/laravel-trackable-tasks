@@ -248,4 +248,12 @@ class TrackedTask extends Model implements TrackableTask
     {
         return Attribute::get(fn (): bool => in_array($this->status, [self::STATUS_FAILED, self::STATUS_FINISHED], true));
     }
+
+    public function toArray(): array
+    {
+        return array_merge(parent::toArray(), [
+            'exceptions' => $this->exceptions ?? [],
+            'output' => $this->output ?? [],
+        ]);
+    }
 }
