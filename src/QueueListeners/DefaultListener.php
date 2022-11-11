@@ -82,7 +82,7 @@ class DefaultListener implements ListensToQueueEvents
         if ($event->connectionName === 'sync' || $event->job->getQueue() === 'sync') {
             return false;
         }
-        
+
         $payload = $event->job->payload();
         $job = unserialize($payload['data']['command'], ['allowed_classes' => true]);
         $uses = class_uses_recursive($job);
