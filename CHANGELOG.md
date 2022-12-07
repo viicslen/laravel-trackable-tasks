@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-trackable-tasks` will be documented in this file.
 
+## v0.3.13 - 2022-12-07
+
+**Full Changelog**: https://github.com/viicslen/laravel-trackable-tasks/compare/v0.3.12...v0.3.13
+
 ## v0.3.12 - 2022-12-07
 
 **Full Changelog**: https://github.com/viicslen/laravel-trackable-tasks/compare/v0.3.11...v0.3.12
@@ -92,7 +96,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskExceptionAdded`: Dispatched when a new exception is added. It will contain the task ID and the exception message.
+- 
 - 
 - 
 - 
@@ -122,7 +128,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskCreating`
+- 
 - 
 - 
 - 
@@ -152,7 +160,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskDeleting`
+- 
 - 
 - 
 - 
@@ -182,7 +192,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskReplicating`
+- 
 - 
 - 
 - 
@@ -212,7 +224,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskRestoring`
+- 
 - 
 - 
 - 
@@ -242,7 +256,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskSaved`
+- 
 - 
 - 
 - 
@@ -272,7 +288,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskTrashed`
+- 
 - 
 - 
 - 
@@ -302,7 +320,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskUpdating`
+- 
 - 
 - 
 - 
