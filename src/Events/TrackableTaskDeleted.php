@@ -2,9 +2,9 @@
 
 namespace ViicSlen\TrackableTasks\Events;
 
-use ViicSlen\TrackableTasks\Concerns\TrackableEvent;
+use ViicSlen\TrackableTasks\Concerns\TrackableEventArray;
 
 class TrackableTaskDeleted
 {
-    use TrackableEvent;
+    use TrackableEventArray;
 }
