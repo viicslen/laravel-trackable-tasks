@@ -249,7 +249,7 @@ class TrackedTask extends Model implements TrackableTask
         return Attribute::get(fn (): bool => in_array($this->status, [self::STATUS_FAILED, self::STATUS_FINISHED], true));
     }
 
-    protected function exceptionCount(): Attribute
+    protected function exceptionsCount(): Attribute
     {
         return Attribute::get(fn (): int => count($this->getExceptions()));
     }

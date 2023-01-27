@@ -23,7 +23,7 @@ trait TrackableEvent
         public TrackableTask|Model $trackableTask
     ) {
         $this->trackableTask = $trackableTask
-            ->append('exception_count')
+            ->append('exceptions_count')
             ->makeHidden(['exceptions', 'output']);
     }
 }
