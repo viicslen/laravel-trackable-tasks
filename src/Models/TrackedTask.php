@@ -125,7 +125,7 @@ class TrackedTask extends Model implements TrackableTask
         ]);
     }
 
-    public function getMessage(): string
+    public function getMessage(): ?string
     {
         return $this->message;
     }
@@ -137,9 +137,9 @@ class TrackedTask extends Model implements TrackableTask
         ]);
     }
 
-    public function getExceptions(): array
+    public function getExceptions(): ?array
     {
-        return $this->exceptions;
+        return $this->exceptions ?? [];
     }
 
     public function addException(mixed $exception): bool

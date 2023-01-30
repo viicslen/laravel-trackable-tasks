@@ -47,11 +47,11 @@ interface TrackableTask
 
     public function setMessage(string $message): bool;
 
-    public function getMessage(): string;
+    public function getMessage(): ?string;
 
     public function setExceptions(array $exceptions): bool;
 
-    public function getExceptions(): array;
+    public function getExceptions(): ?array;
 
     public function addException(mixed $exception): bool;
 
