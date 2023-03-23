@@ -118,3 +118,12 @@ it('records exceptions', function () {
         'exceptions' => "[\"first-exception\",\"second-exception\",\"third-exception\"]",
     ]);
 });
+
+it('uses a fake batch', function () {
+    $name = 'Test batch';
+
+    [$job, $batch] = (new TestJobWithTracking)->withFakeTrackableBatch(name: $name);
+
+    expect($batch->name)->toEqual($name)
+        ->and(TrackableTasks::getTask($job)->name)->toEqual($name);
+});

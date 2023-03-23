@@ -40,7 +40,7 @@ trait TrackAutomatically
             return;
         }
 
-        $this->taskId = TrackableTasks::createTask($this, $data)->getKey();
+        $this->taskId = TrackableTasks::createTaskFrom($this, $data)->getKey();
     }
 
     protected function taskUpdate(array $data): bool

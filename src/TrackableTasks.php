@@ -105,7 +105,19 @@ class TrackableTasks
             ->first();
     }
 
-    public function createTask($trackable, $data): TrackableTask
+    public function createTask(array|string $data): TrackableTask
+    {
+        /** @var TrackableTask $class */
+        $class = app(TrackableTask::class);
+
+        if (is_string($data)) {
+            $data = ['name' => $data];
+        }
+
+        return $class::on($this->connection)->create($data);
+    }
+
+    public function createTaskFrom($trackable, $data): TrackableTask
     {
         /** @var TrackableTask $class */
         $class = app(TrackableTask::class);
@@ -116,7 +128,6 @@ class TrackableTasks
             default => throw new RuntimeException(sprintf('Unsupported trackable type [%s]', get_class($trackable))),
         }, $data);
 
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $class::on($this->connection)->create($data);
     }
 
@@ -161,7 +172,7 @@ class TrackableTasks
     {
         $jobs = Collection::wrap($jobs);
         $taskName = $name ?? ($jobs->first() ? get_class($jobs->first()) : 'Batch');
-        $task = app(TrackableTask::class)::create(['name' => $taskName]);
+        $task = Facades\TrackableTasks::createTask($taskName);
         $batch = Bus::batch($jobs->map(function ($job) use ($task) {
             $uses = array_flip(class_uses_recursive($job));
 

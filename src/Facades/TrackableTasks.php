@@ -5,7 +5,8 @@ namespace ViicSlen\TrackableTasks\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \ViicSlen\TrackableTasks\Contracts\TrackableTask createTask($trackable, array $data)
+ * @method static \ViicSlen\TrackableTasks\Contracts\TrackableTask createTask(array|string $data)
+ * @method static \ViicSlen\TrackableTasks\Contracts\TrackableTask createTaskFrom($trackable, array $data)
  * @method static \ViicSlen\TrackableTasks\Contracts\TrackableTask|null getTask($trackable)
  * @method static bool updateTask($trackable, array $data)
  * @method static bool addTaskException($trackable, mixed $exception)

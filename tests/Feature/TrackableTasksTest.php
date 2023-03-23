@@ -10,7 +10,7 @@ use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithTracking;
 
 it('can create task', function () {
     $job = new TestJobWithFail();
-    $task = TrackableTasks::createTask($job, ['message' => 'Test message.']);
+    $task = TrackableTasks::createTaskFrom($job, ['message' => 'Test message.']);
 
     expect($task)
         ->toBeInstanceOf(TrackableTask::class)
