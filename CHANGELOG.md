@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-trackable-tasks` will be documented in this file.
 
+## v0.4.0 - 2023-03-23
+
+### What's Changed
+
+- Bump ramsey/composer-install from 1 to 2 by @dependabot in https://github.com/viicslen/laravel-trackable-tasks/pull/5
+
+**Full Changelog**: https://github.com/viicslen/laravel-trackable-tasks/compare/v0.3.18...v0.4.0
+
 ## v0.3.18 - 2023-01-30
 
 ### What's Changed
@@ -126,7 +134,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskExceptionAdded`: Dispatched when a new exception is added. It will contain the task ID and the exception message.
+- 
 - 
 - 
 - 
@@ -168,7 +178,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskCreating`
+- 
 - 
 - 
 - 
@@ -210,7 +222,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskDeleting`
+- 
 - 
 - 
 - 
@@ -252,7 +266,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskReplicating`
+- 
 - 
 - 
 - 
@@ -294,7 +310,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskRestoring`
+- 
 - 
 - 
 - 
@@ -336,7 +354,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskSaved`
+- 
 - 
 - 
 - 
@@ -378,7 +398,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskTrashed`
+- 
 - 
 - 
 - 
@@ -420,7 +442,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskUpdating`
+- 
 - 
 - 
 - 
