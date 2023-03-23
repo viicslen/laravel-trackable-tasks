@@ -80,14 +80,14 @@ trait Trackable
         ?CarbonImmutable $createdAt = null,
         ?CarbonImmutable $cancelledAt = null,
         ?CarbonImmutable $finishedAt = null
-    ): array
-    {
+    ): array {
         $uses = class_uses_recursive(static::class);
 
         if (! isset($uses[Batchable::class])) {
             throw new RuntimeException(sprintf(
                 'Job [%s] must use [%s] trait',
-                static::class, Batchable::class
+                static::class,
+                Batchable::class
             ));
         }
 
