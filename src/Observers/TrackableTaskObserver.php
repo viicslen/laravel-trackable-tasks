@@ -7,7 +7,6 @@ use ViicSlen\TrackableTasks\Events\TrackableTaskCreated;
 use ViicSlen\TrackableTasks\Events\TrackableTaskCreating;
 use ViicSlen\TrackableTasks\Events\TrackableTaskDeleted;
 use ViicSlen\TrackableTasks\Events\TrackableTaskDeleting;
-use ViicSlen\TrackableTasks\Events\TrackableTaskExceptionAdded;
 use ViicSlen\TrackableTasks\Events\TrackableTaskForceDeleted;
 use ViicSlen\TrackableTasks\Events\TrackableTaskReplicating;
 use ViicSlen\TrackableTasks\Events\TrackableTaskRestored;
@@ -107,14 +106,6 @@ class TrackableTaskObserver
     public function saving(TrackableTask $task): void
     {
         $this->dispatchEvent('saving', TrackableTaskSaving::class, [$task]);
-
-        if ($task->isDirty('exceptions')) {
-            $changes = array_intersect($task->getExceptions(), $task->getOriginal('exceptions'));
-
-            foreach ($changes as $exception) {
-                $this->dispatchEvent('exception_added', TrackableTaskExceptionAdded::class, [$task->getKey(), $exception]);
-            }
-        }
     }
 
     /**

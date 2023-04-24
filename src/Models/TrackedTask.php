@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use InvalidArgumentException;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
+use ViicSlen\TrackableTasks\Enums\ExceptionSeverity;
 
 /**
  * TrackedTask class
@@ -53,7 +56,6 @@ class TrackedTask extends Model implements TrackableTask
         'progress_now',
         'progress_max',
         'attempts',
-        'exceptions',
         'output',
         'created_at',
         'started_at',
@@ -62,7 +64,6 @@ class TrackedTask extends Model implements TrackableTask
 
     protected $casts = [
         'output' => 'array',
-        'exceptions' => 'array',
         'started_at' => 'datetime',
         'finished_at' => 'datetime',
     ];
@@ -73,7 +74,6 @@ class TrackedTask extends Model implements TrackableTask
         'progress_now' => 0,
         'progress_max' => 0,
         'attempts' => 0,
-        'exceptions' => '[]',
     ];
 
     public function __construct(array $attributes = [])
@@ -91,6 +91,74 @@ class TrackedTask extends Model implements TrackableTask
         }
 
         return static::query()->where('created_at', '<=', now()->subDays($prunableAfter));
+    }
+
+    public function exceptions(): HasMany
+    {
+        return $this->hasMany(TrackedException::class);
+    }
+
+    protected function duration(): Attribute
+    {
+        return Attribute::get(function (): ?string {
+            if (! $this->hasStarted()) {
+                return null;
+            }
+
+            return ($this->finished_at ?? now())
+                ->diffAsCarbonInterval($this->started_at)
+                ->forHumans(['short' => true]);
+        });
+    }
+
+    protected function isQueued(): Attribute
+    {
+        return Attribute::get(fn (): bool => $this->status === self::STATUS_QUEUED);
+    }
+
+    protected function isExecuting(): Attribute
+    {
+        return Attribute::get(fn (): bool => $this->status === self::STATUS_STARTED);
+    }
+
+    protected function isFinished(): Attribute
+    {
+        return Attribute::get(fn (): bool => $this->status === self::STATUS_FINISHED);
+    }
+
+    protected function isFailed(): Attribute
+    {
+        return Attribute::get(fn (): bool => $this->status === self::STATUS_FAILED);
+    }
+
+    protected function isEnded(): Attribute
+    {
+        return Attribute::get(fn (): bool => in_array($this->status, [self::STATUS_FAILED, self::STATUS_FINISHED], true));
+    }
+
+    protected function progressPercentage(): Attribute
+    {
+        return Attribute::get(fn (): int => $this->progress_max !== 0 ? round(100 * $this->progress_now / $this->progress_max) : 0);
+    }
+
+    protected function parseException(string|array $exception): array
+    {
+        if (is_string($exception)) {
+            return [
+                'severity' => ExceptionSeverity::ERROR,
+                'message' => $exception,
+            ];
+        }
+
+        throw_unless(
+            condition: isset($exception['message']) && is_string($exception['message']),
+            exception: new InvalidArgumentException('Exception message must be a valid string.'),
+        );
+
+        return [
+            'severity' => $exception['severity'] ?? ExceptionSeverity::ERROR,
+            'message' => $exception['message'],
+        ];
     }
 
     public function setProgressNow(int $value): bool
@@ -130,21 +198,38 @@ class TrackedTask extends Model implements TrackableTask
         return $this->message;
     }
 
-    public function setExceptions(array $exceptions): bool
-    {
-        return $this->update([
-            'exceptions' => $exceptions,
-        ]);
-    }
-
     public function getExceptions(): ?array
     {
-        return $this->exceptions ?? [];
+        return $this->exceptions->pluck('message')->toArray();
+    }
+
+    public function createExceptions(array $exceptions): bool
+    {
+        $this->exceptions()->createMany(array_map(fn ($exception) => [
+            ...$this->parseException($exception),
+            'tracked_task_id' => $this->id,
+            'created_at' => now(),
+        ], $exceptions));
+
+        $this->touch();
+
+        return true;
+    }
+
+    public function setExceptions(array $exceptions): bool
+    {
+        $this->exceptions()->delete();
+
+        return $this->createExceptions($exceptions);
     }
 
     public function addException(mixed $exception): bool
     {
-        return $this->setExceptions(array_merge($this->exceptions ?? [], [$exception]));
+        $this->exceptions()->create($this->parseException($exception));
+
+        $this->touch();
+
+        return true;
     }
 
     public function setOutput(array $output): bool
@@ -156,7 +241,7 @@ class TrackedTask extends Model implements TrackableTask
 
     public function getOutput(): array
     {
-        return $this->output;
+        return $this->output ?? [];
     }
 
     public function markAsStarted(): bool
@@ -206,59 +291,10 @@ class TrackedTask extends Model implements TrackableTask
         return $this->status === self::STATUS_FAILED;
     }
 
-    protected function progressPercentage(): Attribute
-    {
-        return Attribute::get(fn (): int => $this->progress_max !== 0 ? round(100 * $this->progress_now / $this->progress_max) : 0);
-    }
-
-    protected function duration(): Attribute
-    {
-        return Attribute::get(function (): ?string {
-            if (! $this->hasStarted()) {
-                return null;
-            }
-
-            return ($this->finished_at ?? now())
-                ->diffAsCarbonInterval($this->started_at)
-                ->forHumans(['short' => true]);
-        });
-    }
-
-    protected function isQueued(): Attribute
-    {
-        return Attribute::get(fn (): bool => $this->status === self::STATUS_QUEUED);
-    }
-
-    protected function isExecuting(): Attribute
-    {
-        return Attribute::get(fn (): bool => $this->status === self::STATUS_STARTED);
-    }
-
-    protected function isFinished(): Attribute
-    {
-        return Attribute::get(fn (): bool => $this->status === self::STATUS_FINISHED);
-    }
-
-    protected function isFailed(): Attribute
-    {
-        return Attribute::get(fn (): bool => $this->status === self::STATUS_FAILED);
-    }
-
-    protected function isEnded(): Attribute
-    {
-        return Attribute::get(fn (): bool => in_array($this->status, [self::STATUS_FAILED, self::STATUS_FINISHED], true));
-    }
-
-    protected function exceptionsCount(): Attribute
-    {
-        return Attribute::get(fn (): int => count($this->getExceptions()));
-    }
-
     public function toArray(): array
     {
         return array_merge(parent::toArray(), [
-            'exceptions' => $this->exceptions ?? [],
-            'output' => $this->output ?? [],
+            'output' => $this->getOutput(),
         ]);
     }
 }

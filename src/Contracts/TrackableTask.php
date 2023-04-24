@@ -6,6 +6,7 @@ namespace ViicSlen\TrackableTasks\Contracts;
  * TrackableTask class
  *
  * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin \ViicSlen\TrackableTasks\Models\TrackedTask
  */
 interface TrackableTask
 {
@@ -50,6 +51,8 @@ interface TrackableTask
     public function getMessage(): ?string;
 
     public function setExceptions(array $exceptions): bool;
+
+    public function createExceptions(array $exceptions): bool;
 
     public function getExceptions(): ?array;
 

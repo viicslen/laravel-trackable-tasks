@@ -58,8 +58,18 @@ trait TrackAutomatically
         }
     }
 
+    protected function taskSetExceptions(array $exceptions): bool
+    {
+        return TrackableTasks::setTaskExceptions($this, $exceptions);
+    }
+
     protected function taskRecordException(mixed $exception): bool
     {
         return TrackableTasks::addTaskException($this, $exception);
+    }
+
+    protected function taskRecordMultipleException(mixed $exceptions): bool
+    {
+        return TrackableTasks::addTaskExceptionBatch($this, $exceptions);
     }
 }

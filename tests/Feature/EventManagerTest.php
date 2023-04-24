@@ -48,3 +48,20 @@ it('updates retried task with fails', function () {
         'status' => TrackableTask::STATUS_RETRYING,
     ]);
 });
+
+it('dispatches exception created event', function () {
+    config()->set('queue.default', 'database');
+
+    $job = new TestJobWithException();
+
+    dispatch($job);
+    artisan('queue:work', ['--once' => 1]);
+
+    $this->assertDatabaseHas('tracked_tasks', [
+        'id' => $job->getTaskId(),
+        'status' => TrackableTask::STATUS_FAILED,
+    ]);
+    $this->assertDatabaseHas('tracked_exceptions', [
+        'tracked_task_id' => $job->getTaskId(),
+    ]);
+});

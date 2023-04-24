@@ -104,8 +104,18 @@ trait TrackManually
         return $this->taskSetStatus($status);
     }
 
+    protected function taskSetExceptions(array $exceptions): bool
+    {
+        return $this->task->setExceptions($exceptions);
+    }
+
     protected function taskRecordException(mixed $exception): bool
     {
         return $this->task->addException($exception);
+    }
+
+    protected function taskRecordMultipleException(mixed $exceptions): bool
+    {
+        return $this->task->createExceptions($exceptions);
     }
 }

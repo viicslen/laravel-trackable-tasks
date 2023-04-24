@@ -168,6 +168,28 @@ class TrackableTasks
         return $task->addException($exception);
     }
 
+    public function setTaskExceptions($trackable, mixed $exception): bool
+    {
+        $job = $this->isEvent($trackable) ? $this->getEventJob($trackable) : $trackable;
+
+        if (! ($task = $this->getTask($job))) {
+            return false;
+        }
+
+        return $task->setExceptions($exception);
+    }
+
+    public function addTaskExceptionBatch($trackable, mixed $exception): bool
+    {
+        $job = $this->isEvent($trackable) ? $this->getEventJob($trackable) : $trackable;
+
+        if (! ($task = $this->getTask($job))) {
+            return false;
+        }
+
+        return $task->createExceptions($exception);
+    }
+
     public function batch(mixed $jobs, string $name = null): PendingBatch
     {
         $jobs = Collection::wrap($jobs);

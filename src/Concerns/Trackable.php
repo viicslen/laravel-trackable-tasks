@@ -56,11 +56,6 @@ trait Trackable
         return $this->taskUpdate(['message' => null]);
     }
 
-    protected function taskSetExceptions(array $exceptions): bool
-    {
-        return $this->taskUpdate(['exceptions' => $exceptions]);
-    }
-
     protected function taskSetOutput(array $output): bool
     {
         return $this->taskUpdate(['output' => $output]);
