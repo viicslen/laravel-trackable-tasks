@@ -13,6 +13,7 @@ interface TrackableTask
     public const STATUS_STARTED = 'started';
     public const STATUS_PAUSED = 'paused';
     public const STATUS_FINISHED = 'finished';
+    public const STATUS_STOPPED = 'stopped';
     public const STATUS_FAILED = 'failed';
     public const STATUS_RETRYING = 'retrying';
 
@@ -21,6 +22,7 @@ interface TrackableTask
         self::STATUS_STARTED,
         self::STATUS_PAUSED,
         self::STATUS_FINISHED,
+        self::STATUS_STOPPED,
         self::STATUS_FAILED,
         self::STATUS_RETRYING,
     ];
@@ -70,4 +72,8 @@ interface TrackableTask
     public function hasFinished(): bool;
 
     public function hasFailed(): bool;
+
+    public function isPaused(): bool;
+
+    public function isStopped(): bool;
 }

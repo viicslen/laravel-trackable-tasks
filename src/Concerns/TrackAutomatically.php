@@ -3,6 +3,7 @@
 namespace ViicSlen\TrackableTasks\Concerns;
 
 use Illuminate\Bus\Batchable;
+use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 use ViicSlen\TrackableTasks\Facades\TrackableTasks;
 use ViicSlen\TrackableTasks\Jobs\Middleware\TrackableBatch;
 
@@ -29,6 +30,11 @@ trait TrackAutomatically
         return $this->taskId;
     }
 
+    public function getTask(): ?TrackableTask
+    {
+        return TrackableTasks::getTask($this);
+    }
+
     public function setTaskId(int $taskId): void
     {
         $this->taskId = $taskId;
@@ -50,9 +56,7 @@ trait TrackAutomatically
 
     protected function taskRefresh(): void
     {
-        $task = TrackableTasks::getTask($this);
-
-        if ($task) {
+        if ($task = $this->getTask()) {
             $this->progressNow = $task->getProgressNow();
             $this->progressMax = $task->getProgressMax();
         }

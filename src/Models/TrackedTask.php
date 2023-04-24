@@ -201,6 +201,16 @@ class TrackedTask extends Model implements TrackableTask
         return $this->status === self::STATUS_FINISHED;
     }
 
+    public function isPaused(): bool
+    {
+        return $this->status === self::STATUS_PAUSED;
+    }
+
+    public function isStopped(): bool
+    {
+        return $this->status === self::STATUS_STOPPED;
+    }
+
     public function hasFailed(): bool
     {
         return $this->status === self::STATUS_FAILED;
