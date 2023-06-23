@@ -4,6 +4,7 @@ namespace ViicSlen\TrackableTasks\Concerns;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Bus\Batchable;
+use Illuminate\Support\Facades\Log;
 use RuntimeException;
 use Throwable;
 use ViicSlen\TrackableTasks\Facades\TrackableTasks;
@@ -17,6 +18,13 @@ trait Trackable
     {
         $this->taskSetMessage($exception->getMessage());
         $this->taskRecordException($exception->getMessage());
+
+        if (config('trackable-tasks.log_failures.enabled')) {
+            Log::channel(config('trackable-tasks.log_failures.channel'))->error($exception->getMessage(), [
+                'task_id' => $this->getTaskId(),
+                'exception' => $exception,
+            ]);
+        }
     }
 
     protected function taskSetProgressMax(int $value): bool

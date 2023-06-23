@@ -2,6 +2,7 @@
 
 namespace ViicSlen\TrackableTasks\Concerns;
 
+use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use Throwable;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
@@ -18,6 +19,13 @@ trait TrackManually
     {
         $this->taskSetMessage($exception->getMessage(), TrackableTask::STATUS_FAILED);
         $this->taskRecordException($exception->getMessage());
+
+        if (config('trackable-tasks.log_failures.enabled')) {
+            Log::channel(config('trackable-tasks.log_failures.channel'))->error($exception->getMessage(), [
+                'task_id' => $this->getTaskId(),
+                'exception' => $exception,
+            ]);
+        }
     }
 
     public function getTask(): TrackableTask

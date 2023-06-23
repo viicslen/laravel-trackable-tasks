@@ -86,4 +86,19 @@ return [
         'exception_added' => ViicSlen\TrackableTasks\Events\TrackableTaskExceptionAdded::class,
         'status_updated' => ViicSlen\TrackableTasks\Events\TrackableTaskStatusUpdated::class,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tracked Task Log Failures
+    |--------------------------------------------------------------------------
+    |
+    | This config determines whether to log failures when a task fails due to
+    | an exception. If enabled, it will log the exception message and stack.
+    |
+    */
+
+    'log_failures' => [
+        'enabled' => env('TRACKABLE_TASKS_LOG_FAILURES', false),
+        'channel' => env('TRACKABLE_TASKS_LOG_CHANNEL'),
+    ],
 ];
