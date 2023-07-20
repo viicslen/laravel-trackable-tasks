@@ -3,6 +3,11 @@
 namespace ViicSlen\TrackableTasks\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use ViicSlen\TrackableTasks\Contracts\ListensToQueueEvents;
+use ViicSlen\TrackableTasks\Contracts\TrackableTask;
+use ViicSlen\TrackableTasks\Testing\Fakes\FakeListener;
+use ViicSlen\TrackableTasks\Testing\Fakes\TrackableTasksFake;
+use ViicSlen\TrackableTasks\Testing\Fakes\TrackedTaskFake;
 
 /**
  * @method static \ViicSlen\TrackableTasks\Contracts\TrackableTask createTask(array|string $data)
@@ -17,5 +22,15 @@ class TrackableTasks extends Facade
     protected static function getFacadeAccessor(): string
     {
         return 'trackable_tasks';
+    }
+
+    public static function fake(): TrackableTasksFake
+    {
+        self::$app->bind(TrackableTask::class, TrackedTaskFake::class);
+        self::$app->bind(ListensToQueueEvents::class, FakeListener::class);
+
+        static::swap($fake = new TrackableTasksFake());
+
+        return $fake;
     }
 }

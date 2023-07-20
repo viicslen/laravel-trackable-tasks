@@ -1,6 +1,6 @@
 <?php
 
-namespace ViicSlen\TrackableTasks;
+namespace ViicSlen\TrackableTasks\Testing\Fakes;
 
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\PendingBatch;
@@ -16,15 +16,11 @@ use Illuminate\Support\Facades\Bus;
 use RuntimeException;
 use ViicSlen\TrackableTasks\Concerns\TrackAutomatically;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
+use ViicSlen\TrackableTasks\Facades;
 
-class TrackableTasks
+class TrackableTasksFake
 {
-    protected string $connection;
-
-    public function __construct()
-    {
-        $this->connection = config('trackable-task.database.connection', config('database.default', 'mysql'));
-    }
+    protected array $trackedTasks = [];
 
     protected function isEvent($trackable): bool
     {
@@ -98,11 +94,7 @@ class TrackableTasks
             return null;
         }
 
-        $class = app(TrackableTask::class);
-
-        return $class::on($this->connection)
-            ->whereKey($id)
-            ->first();
+        return $this->trackedTasks[$id] ?? null;
     }
 
     public function createTask(array|string $data): TrackableTask
@@ -114,21 +106,22 @@ class TrackableTasks
             $data = ['name' => $data];
         }
 
-        return $class::on($this->connection)->create($data);
+        $task = $class::create($data);
+
+        $this->trackedTasks[$task->id] = $task;
+
+        return $task;
     }
 
     public function createTaskFrom($trackable, $data): TrackableTask
     {
-        /** @var TrackableTask $class */
-        $class = app(TrackableTask::class);
-
         $data = array_merge(match (true) {
             $this->isQueableOrEvent($trackable) => $this->getJobDetails($trackable),
             $trackable instanceof Model => $this->getModelDetails($trackable),
             default => throw new RuntimeException(sprintf('Unsupported trackable type [%s]', get_class($trackable))),
         }, $data);
 
-        return $class::on($this->connection)->create($data);
+        return Facades\TrackableTasks::createTask($data);
     }
 
     public function updateTask($trackable, array $data): bool
@@ -154,7 +147,11 @@ class TrackableTasks
             }
         }
 
-        return $task->update(array_merge($this->getJobDetails($job), $data));
+        $updated = $task->update(array_merge($this->getJobDetails($job), $data));
+
+        $this->trackedTasks[$task->id] = $task;
+
+        return $updated;
     }
 
     public function addTaskException($trackable, mixed $exception): bool
@@ -170,10 +167,12 @@ class TrackableTasks
 
     public function batch(mixed $jobs, string $name = null): PendingBatch
     {
-        $jobs = Collection::wrap($jobs);
+        $jobs =  Collection::wrap($jobs);
+
         $taskName = $name ?? ($jobs->first() ? get_class($jobs->first()) : 'Batch');
         $task = Facades\TrackableTasks::createTask($taskName);
-        $batch = Bus::batch($jobs->map(function ($job) use ($task) {
+
+        $trackableJobs = $jobs->map(function ($job) use ($task) {
             $uses = array_flip(class_uses_recursive($job));
 
             if (isset($uses[TrackAutomatically::class]) && method_exists($job, 'setTaskId')) {
@@ -181,7 +180,9 @@ class TrackableTasks
             }
 
             return $job;
-        }));
+        });
+
+        $batch = Bus::fake()->batch($trackableJobs);
 
         if ($name) {
             $batch->name($name);

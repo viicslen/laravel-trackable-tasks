@@ -1,0 +1,27 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+concurrency:
+  group: ci-release
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: '🧹 Lint'
+    uses: fmtod/laravel-tabulator/.github/workflows/_lint.yml@main
+
+  test:
+    name: '🧪 Test'
+    uses: fmtod/laravel-tabulator/.github/workflows/_test.yml@main
+
+  release:
+    name: '🚀 Release'
+    needs: [test, lint]
+    uses: fmtod/laravel-tabulator/.github/workflows/_release.yml@main
+    secrets: inherit

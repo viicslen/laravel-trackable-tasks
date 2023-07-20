@@ -1,0 +1,21 @@
+name: Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+concurrency:
+  group: ci-release
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: '🧹 Lint'
+    uses: fmtod/laravel-tabulator/.github/workflows/_lint.yml@main
+
+  test:
+    name: '🧪 Test'
+    uses: fmtod/laravel-tabulator/.github/workflows/_test.yml@main

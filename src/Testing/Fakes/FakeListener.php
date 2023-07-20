@@ -1,6 +1,6 @@
 <?php
 
-namespace ViicSlen\TrackableTasks\QueueListeners;
+namespace ViicSlen\TrackableTasks\Testing\Fakes;
 
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobFailed;
@@ -8,14 +8,14 @@ use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Carbon;
 use ViicSlen\TrackableTasks\Concerns\TrackableListener;
-use ViicSlen\TrackableTasks\Concerns\TrackAutomatically;
 use ViicSlen\TrackableTasks\Contracts\ListensToQueueEvents;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
-use ViicSlen\TrackableTasks\Facades\TrackableTasks;
 
-class DefaultListener implements ListensToQueueEvents
+class FakeListener implements ListensToQueueEvents
 {
     use TrackableListener;
+
+    protected array $events = [];
 
     public function before(JobProcessing $event): void
     {
@@ -23,10 +23,11 @@ class DefaultListener implements ListensToQueueEvents
             return;
         }
 
-        TrackableTasks::updateTask($event, [
+        $this->events[] = [
+            'job' => $event->job,
             'status' => TrackableTask::STATUS_STARTED,
             'started_at' => Carbon::now(),
-        ]);
+        ];
     }
 
     public function after(JobProcessed $event): void
@@ -39,10 +40,11 @@ class DefaultListener implements ListensToQueueEvents
             return;
         }
 
-        TrackableTasks::updateTask($event, [
+        $this->events[] = [
+            'job' => $event->job,
             'status' => TrackableTask::STATUS_FINISHED,
             'finished_at' => Carbon::now(),
-        ]);
+        ];
     }
 
     public function failing(JobFailed|JobExceptionOccurred $event): void
@@ -51,15 +53,19 @@ class DefaultListener implements ListensToQueueEvents
             return;
         }
 
-        if (is_null(!$event->job->maxTries()) && $event->job->attempts() < $event->job->maxTries()) {
-            TrackableTasks::updateTask($event, ['status' => TrackableTask::STATUS_RETRYING]);
+        if (is_null($event->job->maxTries()) || $event->job->attempts() >= $event->job->maxTries()) {
+            $this->events[] = [
+                'job' => $event->job,
+                'status' => TrackableTask::STATUS_FINISHED,
+                'finished_at' => Carbon::now(),
+            ];
 
             return;
         }
 
-        TrackableTasks::updateTask($event, [
-            'status' => TrackableTask::STATUS_FAILED,
-            'finished_at' => Carbon::now(),
-        ]);
+        $this->events[] = [
+            'job' => $event->job,
+            'status' => TrackableTask::STATUS_RETRYING,
+        ];
     }
 }
