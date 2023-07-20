@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-trackable-tasks` will be documented in this file.
 
+## v0.5.0 - 2023-07-20
+
+### What's Changed
+
+- Bump dependabot/fetch-metadata from 1.5.1 to 1.6.0 by @dependabot in https://github.com/viicslen/laravel-trackable-tasks/pull/9
+
+**Full Changelog**: https://github.com/viicslen/laravel-trackable-tasks/compare/v0.4.1...v0.5.0
+
 ## v0.4.1 - 2023-06-23
 
 ### What's Changed
@@ -145,7 +153,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskExceptionAdded`: Dispatched when a new exception is added. It will contain the task ID and the exception message.
+- 
 - 
 - 
 - 
@@ -191,7 +201,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskCreating`
+- 
 - 
 - 
 - 
@@ -237,7 +249,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskDeleting`
+- 
 - 
 - 
 - 
@@ -283,7 +297,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskReplicating`
+- 
 - 
 - 
 - 
@@ -329,7 +345,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskRestoring`
+- 
 - 
 - 
 - 
@@ -375,7 +393,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskSaved`
+- 
 - 
 - 
 - 
@@ -421,7 +441,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskTrashed`
+- 
 - 
 - 
 - 
@@ -467,7 +489,9 @@ All notable changes to `laravel-trackable-tasks` will be documented in this file
 - 
 - 
 - 
+- 
 - - `TrackableTaskUpdating`
+- 
 - 
 - 
 - 
