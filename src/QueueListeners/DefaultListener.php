@@ -8,7 +8,6 @@ use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Carbon;
 use ViicSlen\TrackableTasks\Concerns\TrackableListener;
-use ViicSlen\TrackableTasks\Concerns\TrackAutomatically;
 use ViicSlen\TrackableTasks\Contracts\ListensToQueueEvents;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 use ViicSlen\TrackableTasks\Facades\TrackableTasks;
@@ -51,7 +50,7 @@ class DefaultListener implements ListensToQueueEvents
             return;
         }
 
-        if (is_null(!$event->job->maxTries()) && $event->job->attempts() < $event->job->maxTries()) {
+        if (is_null(! $event->job->maxTries()) && $event->job->attempts() < $event->job->maxTries()) {
             TrackableTasks::updateTask($event, ['status' => TrackableTask::STATUS_RETRYING]);
 
             return;

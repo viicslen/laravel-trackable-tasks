@@ -2,12 +2,8 @@
 
 namespace ViicSlen\TrackableTasks\Testing\Fakes;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\MassPrunable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Str;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;

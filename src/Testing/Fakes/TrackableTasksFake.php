@@ -167,7 +167,7 @@ class TrackableTasksFake
 
     public function batch(mixed $jobs, string $name = null): PendingBatch
     {
-        $jobs =  Collection::wrap($jobs);
+        $jobs = Collection::wrap($jobs);
 
         $taskName = $name ?? ($jobs->first() ? get_class($jobs->first()) : 'Batch');
         $task = Facades\TrackableTasks::createTask($taskName);
