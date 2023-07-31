@@ -50,7 +50,7 @@ class DefaultListener implements ListensToQueueEvents
             return;
         }
 
-        if (is_null(! $event->job->maxTries()) && $event->job->attempts() < $event->job->maxTries()) {
+        if ($event->job->maxTries() && $event->job->attempts() < $event->job->maxTries()) {
             TrackableTasks::updateTask($event, ['status' => TrackableTask::STATUS_RETRYING]);
 
             return;

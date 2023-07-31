@@ -27,6 +27,7 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app): void
     {
         config()->set('database.default', 'testing');
+        config()->set('queue.default', 'sync');
 
         $jobTable = include __DIR__.'/Stub/migrations/create_jobs_table.php';
         $jobTable->up();

@@ -12,7 +12,7 @@
     verbose="true"
 >
     <testsuites>
-        <testsuite name="ViicSlen Test Suite">
+        <testsuite name="Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
