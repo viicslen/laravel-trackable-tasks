@@ -11,7 +11,6 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 use ViicSlen\TrackableTasks\Listener\JobExceptionListener;
-use ViicSlen\TrackableTasks\Listener\JobFailedListener;
 use ViicSlen\TrackableTasks\Listener\JobProcessedListener;
 use ViicSlen\TrackableTasks\Listener\JobProcessingListener;
 use ViicSlen\TrackableTasks\Observers\TrackableTaskObserver;
