@@ -1,17 +1,16 @@
 <?php
 
-use function Pest\Laravel\artisan;
-use function Pest\Laravel\assertDatabaseHas;
-
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 use ViicSlen\TrackableTasks\Facades\TrackableTasks;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithException;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithExceptionRecording;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithFail;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithMessage;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithOutput;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithoutTracking;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithTracking;
+use Workbench\App\Jobs\TestJobWithException;
+use Workbench\App\Jobs\TestJobWithExceptionRecording;
+use Workbench\App\Jobs\TestJobWithFail;
+use Workbench\App\Jobs\TestJobWithMessage;
+use Workbench\App\Jobs\TestJobWithOutput;
+use Workbench\App\Jobs\TestJobWithoutTracking;
+use Workbench\App\Jobs\TestJobWithTracking;
+use function Pest\Laravel\artisan;
+use function Pest\Laravel\assertDatabaseHas;
 
 it('track batches', function () {
     $batch = TrackableTasks::batch([
@@ -19,7 +18,7 @@ it('track batches', function () {
         new TestJobWithoutTracking(),
     ], 'Test Batch')->dispatch();
 
-    artisan('queue:work', ['--once' => 1]);
+    artisan('queue:work', ['--stop-when-empty' => true]);
 
     assertDatabaseHas('tracked_tasks', [
         'trackable_id' => $batch->id,
@@ -37,7 +36,7 @@ it('tracks finished tasks', function () {
     ]);
 
     dispatch($job);
-    artisan('queue:work', ['--once' => 1]);
+    artisan('queue:work', ['--stop-when-empty' => true]);
 
     assertDatabaseHas('tracked_tasks', [
         'id' => $job->getTaskId(),
@@ -51,7 +50,7 @@ it('tracks failed status with exception', function () {
     $job = new TestJobWithException();
 
     dispatch($job);
-    artisan('queue:work', ['--once' => 1]);
+    artisan('queue:work', ['--stop-when-empty' => true]);
 
     assertDatabaseHas('tracked_tasks', [
         'id' => $job->getTaskId(),
@@ -63,7 +62,7 @@ it('tracks failed status with fail', function () {
     $job = new TestJobWithFail();
 
     dispatch($job);
-    artisan('queue:work', ['--once' => 1]);
+    artisan('queue:work', ['--stop-when-empty' => true]);
 
     assertDatabaseHas('tracked_tasks', [
         'id' => $job->getTaskId(),
@@ -87,7 +86,7 @@ it('records message', function () {
     $job = new TestJobWithMessage();
 
     dispatch($job);
-    artisan('queue:work', ['--once' => 1]);
+    artisan('queue:work', ['--stop-when-empty' => true]);
 
     assertDatabaseHas('tracked_tasks', [
         'id' => $job->getTaskId(),
@@ -99,7 +98,7 @@ it('records output', function () {
     $job = new TestJobWithOutput();
 
     dispatch($job);
-    artisan('queue:work', ['--once' => 1]);
+    artisan('queue:work', ['--stop-when-empty' => true]);
 
     assertDatabaseHas('tracked_tasks', [
         'id' => $job->getTaskId(),
@@ -111,7 +110,7 @@ it('records exceptions', function () {
     $job = new TestJobWithExceptionRecording();
 
     dispatch($job);
-    artisan('queue:work', ['--once' => 1]);
+    artisan('queue:work', ['--stop-when-empty' => true]);
 
     assertDatabaseHas('tracked_tasks', [
         'id' => $job->getTaskId(),

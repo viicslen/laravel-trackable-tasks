@@ -1,11 +1,10 @@
 <?php
 
-use function Pest\Laravel\artisan;
-
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithException;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithExceptionTries;
-use ViicSlen\TrackableTasks\Tests\Stub\TestJobWithFailTries;
+use Workbench\App\Jobs\TestJobWithException;
+use Workbench\App\Jobs\TestJobWithExceptionTries;
+use Workbench\App\Jobs\TestJobWithFailTries;
+use function Pest\Laravel\artisan;
 
 it('updates tracked task', function () {
     config()->set('queue.default', 'database');
@@ -13,7 +12,7 @@ it('updates tracked task', function () {
     $job = new TestJobWithException();
 
     dispatch($job);
-    artisan('queue:work', ['--once' => 1]);
+    artisan('queue:work', ['--stop-when-empty' => true]);
 
     $this->assertDatabaseHas('tracked_tasks', [
         'id' => $job->getTaskId(),
@@ -27,7 +26,7 @@ it('updates retried task with exceptions', function () {
     $job = new TestJobWithExceptionTries();
 
     dispatch($job);
-    artisan('queue:work', ['--once' => 1]);
+    artisan('queue:work', ['--once' => true]);
 
     $this->assertDatabaseHas('tracked_tasks', [
         'id' => $job->getTaskId(),
@@ -41,7 +40,7 @@ it('updates retried task with fails', function () {
     $job = new TestJobWithFailTries();
 
     dispatch($job);
-    artisan('queue:work', ['--once' => 1]);
+    artisan('queue:work', ['--stop-when-empty' => true]);
 
     $this->assertDatabaseHas('tracked_tasks', [
         'id' => $job->getTaskId(),

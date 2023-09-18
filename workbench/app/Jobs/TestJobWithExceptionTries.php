@@ -1,6 +1,6 @@
 <?php
 
-namespace ViicSlen\TrackableTasks\Tests\Stub;
+namespace Workbench\App\Jobs;
 
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -9,7 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use ViicSlen\TrackableTasks\Concerns\TrackAutomatically;
 
-class TestJobWithExceptionRecording implements ShouldQueue
+class TestJobWithExceptionTries implements ShouldQueue
 {
     use InteractsWithQueue;
     use Queueable;
@@ -17,9 +17,10 @@ class TestJobWithExceptionRecording implements ShouldQueue
     use TrackAutomatically;
     use Batchable;
 
+    public int $tries = 3;
+
     public function handle(): void
     {
-        $this->taskSetExceptions(['first-exception', 'second-exception']);
-        $this->taskRecordException('third-exception');
+        throw new \Exception('test-exception');
     }
 }
