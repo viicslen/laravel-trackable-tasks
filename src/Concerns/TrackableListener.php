@@ -9,12 +9,13 @@ use Illuminate\Queue\Events\JobProcessing;
 
 trait TrackableListener
 {
-    protected function canBeTracked(JobProcessing|JobProcessed|JobFailed|JobExceptionOccurred $event): bool
+    /**
+     * Determine whether the job should be handled.
+     *
+     * @param JobProcessing|JobProcessed|JobFailed|JobExceptionOccurred $event
+     */
+    public function isTrackableJob(mixed $event): bool
     {
-        if ($event->connectionName === 'sync' || $event->job->getQueue() === 'sync') {
-            return false;
-        }
-
         $payload = $event->job->payload();
         $job = unserialize($payload['data']['command'], ['allowed_classes' => true]);
         $uses = class_uses_recursive($job);
@@ -22,8 +23,29 @@ trait TrackableListener
         return isset($uses[TrackAutomatically::class]);
     }
 
-    public function exceptionOccurred(JobExceptionOccurred $event): void
+    /**
+     * Determine whether the listener should be queued.
+     *
+     * @param  JobProcessing|JobProcessed|JobFailed|JobExceptionOccurred  $event
+     */
+    public function shouldQueue(mixed $event): bool
     {
-        $this->failing($event);
+        return $this->isTrackableJob($event);
+    }
+
+    /**
+     * Get the name of the listener's queue connection.
+     */
+    public function viaConnection(): string
+    {
+        return config('trackable-tasks.listeners.connection', config('queue.default')) ?? 'sync';
+    }
+
+    /**
+     * Get the name of the listener's queue.
+     */
+    public function viaQueue(): string
+    {
+        return config('trackable-tasks.listeners.queue', 'default');
     }
 }

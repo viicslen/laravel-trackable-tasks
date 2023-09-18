@@ -6,11 +6,14 @@ use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
-use Illuminate\Queue\QueueManager;
+use Illuminate\Support\Facades\Event;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use ViicSlen\TrackableTasks\Contracts\ListensToQueueEvents;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
+use ViicSlen\TrackableTasks\Listener\JobExceptionListener;
+use ViicSlen\TrackableTasks\Listener\JobFailedListener;
+use ViicSlen\TrackableTasks\Listener\JobProcessedListener;
+use ViicSlen\TrackableTasks\Listener\JobProcessingListener;
 use ViicSlen\TrackableTasks\Observers\TrackableTaskObserver;
 
 class TrackableTasksServiceProvider extends PackageServiceProvider
@@ -32,24 +35,16 @@ class TrackableTasksServiceProvider extends PackageServiceProvider
     {
         $this->app->bind('trackable_tasks', fn () => new TrackableTasks());
         $this->app->bind(TrackableTask::class, config('trackable-tasks.model'));
-        $this->app->bind(ListensToQueueEvents::class, config('trackable-tasks.queue_listener'));
     }
 
     public function packageBooted(): void
     {
-        /** @var \Illuminate\Queue\QueueManager $queueManger */
-        $queueManger = app(QueueManager::class);
-
-        /** @var \ViicSlen\TrackableTasks\Contracts\ListensToQueueEvents $eventManager */
-        $eventManager = app(ListensToQueueEvents::class);
-
         // Add task observer
         app(TrackableTask::class)::observe(TrackableTaskObserver::class);
 
-        // Add Event listeners
-        $queueManger->before(fn (JobProcessing $event) => $eventManager->before($event));
-        $queueManger->after(fn (JobProcessed $event) => $eventManager->after($event));
-        $queueManger->failing(fn (JobFailed $event) => $eventManager->failing($event));
-        $queueManger->exceptionOccurred(fn (JobExceptionOccurred $event) => $eventManager->exceptionOccurred($event));
+        Event::listen(JobProcessed::class, JobProcessedListener::class);
+        Event::listen(JobProcessing::class, JobProcessingListener::class);
+        Event::listen(JobExceptionOccurred::class, JobExceptionListener::class);
+        Event::listen(JobFailed::class, JobExceptionListener::class);
     }
 }

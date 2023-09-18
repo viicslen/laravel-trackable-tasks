@@ -211,6 +211,11 @@ class TrackedTask extends Model implements TrackableTask
         return $this->status === self::STATUS_STOPPED;
     }
 
+    public function isRetrying(): bool
+    {
+        return $this->status === self::STATUS_RETRYING;
+    }
+
     public function hasFailed(): bool
     {
         return $this->status === self::STATUS_FAILED;

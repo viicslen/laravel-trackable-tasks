@@ -4,18 +4,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Tracked Task Queue Listener
-    |--------------------------------------------------------------------------
-    |
-    | The queue listener which updates the tracked task model when its status
-    | changes.
-    |
-    */
-
-    'queue_listener' => ViicSlen\TrackableTasks\QueueListeners\DefaultListener::class,
-
-    /*
-    |--------------------------------------------------------------------------
     | Tracked Task Model
     |--------------------------------------------------------------------------
     |

@@ -41,21 +41,25 @@ class TrackedTaskFake extends Fluent implements TrackableTask
 {
     use HasAttributes;
 
-    protected $casts = [
-        'output' => 'array',
-        'exceptions' => 'array',
-        'started_at' => 'datetime',
-        'finished_at' => 'datetime',
-    ];
+    public function __construct($attributes = [])
+    {
 
-    protected $attributes = [
-        'type' => TrackableTask::TYPE_JOB,
-        'status' => TrackableTask::STATUS_QUEUED,
-        'progress_now' => 0,
-        'progress_max' => 0,
-        'attempts' => 0,
-        'exceptions' => '[]',
-    ];
+        $this->casts = [
+            'output' => 'array',
+            'exceptions' => 'array',
+            'started_at' => 'datetime',
+            'finished_at' => 'datetime',
+        ];
+
+        parent::__construct(array_merge([
+            'type' => TrackableTask::TYPE_JOB,
+            'status' => TrackableTask::STATUS_QUEUED,
+            'progress_now' => 0,
+            'progress_max' => 0,
+            'attempts' => 0,
+            'exceptions' => '[]',
+        ], $attributes));
+    }
 
     public static function create(array $attributes = []): static
     {
@@ -190,6 +194,11 @@ class TrackedTaskFake extends Fluent implements TrackableTask
     public function isStopped(): bool
     {
         return $this->status === self::STATUS_STOPPED;
+    }
+
+    public function isRetrying(): bool
+    {
+        return $this->status === self::STATUS_RETRYING;
     }
 
     public function hasFailed(): bool

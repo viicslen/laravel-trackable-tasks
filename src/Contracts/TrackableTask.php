@@ -76,4 +76,6 @@ interface TrackableTask
     public function isPaused(): bool;
 
     public function isStopped(): bool;
+
+    public function isRetrying(): bool;
 }

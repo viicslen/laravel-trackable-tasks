@@ -139,7 +139,7 @@ class TrackableTasks
             return false;
         }
 
-        if (isset($data['status']) && $data['status'] === TrackableTask::STATUS_FINISHED && $task->hasFailed()) {
+        if (isset($data['status']) && $data['status'] === TrackableTask::STATUS_FINISHED && ($task->hasFailed() || $task->isRetrying())) {
             unset($data['status']);
         }
 
