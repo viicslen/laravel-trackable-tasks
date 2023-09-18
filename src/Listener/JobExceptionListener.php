@@ -15,7 +15,7 @@ class JobExceptionListener
 
     public function handle(JobExceptionOccurred|JobFailed $event): void
     {
-        if (!$this->isTrackableJob($event)) {
+        if (! $this->isTrackableJob($event)) {
             return;
         }
 

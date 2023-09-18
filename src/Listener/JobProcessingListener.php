@@ -14,7 +14,7 @@ class JobProcessingListener
 
     public function handle(JobProcessing $event): void
     {
-        if (!$this->isTrackableJob($event)) {
+        if (! $this->isTrackableJob($event)) {
             return;
         }
 

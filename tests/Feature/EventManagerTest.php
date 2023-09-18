@@ -1,10 +1,11 @@
 <?php
 
+use function Pest\Laravel\artisan;
+
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 use Workbench\App\Jobs\TestJobWithException;
 use Workbench\App\Jobs\TestJobWithExceptionTries;
 use Workbench\App\Jobs\TestJobWithFailTries;
-use function Pest\Laravel\artisan;
 
 it('updates tracked task', function () {
     config()->set('queue.default', 'database');
