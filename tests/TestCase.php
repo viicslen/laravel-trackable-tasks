@@ -3,11 +3,15 @@
 namespace ViicSlen\TrackableTasks\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Orchestra\Testbench\TestCase as Orchestra;
 use ViicSlen\TrackableTasks\TrackableTasksServiceProvider;
+use function Orchestra\Testbench\workbench_path;
 
 class TestCase extends Orchestra
 {
+    use LazilyRefreshDatabase;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -24,17 +28,19 @@ class TestCase extends Orchestra
         ];
     }
 
+    /**
+     * Define database migrations.
+     *
+     * @return void
+     */
+    protected function defineDatabaseMigrations(): void
+    {
+        $this->loadLaravelMigrations();
+        $this->loadMigrationsFrom(workbench_path('database/migrations'));
+    }
+
     public function getEnvironmentSetUp($app): void
     {
-        config()->set('database.default', 'testing');
-        config()->set('queue.default', 'sync');
-
-        $jobTable = include __DIR__.'/Stub/migrations/create_jobs_table.php';
-        $jobTable->up();
-
-        $jobBatchesTable = include __DIR__.'/Stub/migrations/create_job_batches_table.php';
-        $jobBatchesTable->up();
-
         $migration = include __DIR__.'/../database/migrations/create_trackable_tasks_table.php.stub';
         $migration->up();
     }
