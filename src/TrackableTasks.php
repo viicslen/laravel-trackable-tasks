@@ -189,4 +189,18 @@ class TrackableTasks
 
         return $batch;
     }
+
+    public function of(mixed $trackable, array $attributes): array
+    {
+        if (method_exists($trackable, 'setTaskId')) {
+            throw new RuntimeException(sprintf('The [%s] model does not support tracking', get_class($trackable)));
+        }
+
+        /** @var \ViicSlen\TrackableTasks\Contracts\TrackableTask $task */
+        $task = app(TrackableTask::class)::create($attributes);
+
+        $trackable->setTaskId($task->id);
+
+        return [$trackable, $task];
+    }
 }
