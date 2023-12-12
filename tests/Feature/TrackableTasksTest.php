@@ -81,3 +81,19 @@ it('doesn\'t add exception when job is not trackable', function () {
 
     expect($updated)->toBeFalse();
 });
+
+it('can create and attach task to job', function () {
+    [$job, $task] = TrackableTasks::of(new TestJobWithTracking(), [
+        'name' => 'Test task.',
+        'message' => 'Test message.'
+    ]);
+
+    expect($task)
+        ->toBeInstanceOf(TrackableTask::class)
+        ->toMatchArray([
+            'name' => 'Test task.',
+            'message' => 'Test message.'
+        ]);
+
+    expect($job)->getTaskId()->toBe($task->id);
+});

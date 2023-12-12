@@ -15,6 +15,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use RuntimeException;
 use ViicSlen\TrackableTasks\Concerns\TrackAutomatically;
+use ViicSlen\TrackableTasks\Concerns\TrackManually;
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 
 class TrackableTasks
@@ -192,14 +193,16 @@ class TrackableTasks
 
     public function of(mixed $trackable, array $attributes): array
     {
-        if (method_exists($trackable, 'setTaskId')) {
-            throw new RuntimeException(sprintf('The [%s] model does not support tracking', get_class($trackable)));
-        }
-
         /** @var \ViicSlen\TrackableTasks\Contracts\TrackableTask $task */
         $task = app(TrackableTask::class)::create($attributes);
 
-        $trackable->setTaskId($task->id);
+        $uses = array_flip(class_uses_recursive($trackable));
+
+        if (isset($uses[TrackAutomatically::class])) {
+            $trackable->setTaskId($task->id);
+        } elseif (isset($uses[TrackManually::class])) {
+            $trackable->setTask($task);
+        }
 
         return [$trackable, $task];
     }
