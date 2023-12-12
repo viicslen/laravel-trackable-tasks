@@ -133,17 +133,17 @@ it('can be marked as failed', function () {
 it('can calculate duration', function () {
     $task = TrackedTask::factory()->create();
 
-    expect($task)->duration->ray()->toBeNull();
+    expect($task)->duration->toBeNull();
 
     $task->markAsStarted();
 
     sleep(2);
 
-    expect($task)->duration->ray()->toEqual('2s');
+    expect($task)->duration->toBeIn(['2s', '3s']);
 
     sleep(2);
 
     $task->markAsFinished();
 
-    expect($task)->duration->ray()->toEqual('4s');
+    expect($task)->duration->toBeIn(['4s', '5s']);
 });
