@@ -105,7 +105,7 @@ class TrackableTasks
             : null;
     }
 
-    public function getTask($trackable): ?TrackableTask
+    public function getTask($trackable): TrackableTask|Model|Builder|null
     {
         $job = $this->isEvent($trackable) ? $this->getEventJob($trackable) : $trackable;
 
@@ -114,24 +114,21 @@ class TrackableTasks
         }
 
 
-        return $this->query()
-            ->on($this->connection)
+        return $this->model()::on($this->connection)
             ->whereKey($id)
             ->first();
     }
 
-    public function createTask(array|string $data): TrackableTask
+    public function createTask(array|string $data): TrackableTask|Model|Builder
     {
         if (is_string($data)) {
             $data = ['name' => $data];
         }
 
-        return $this->query()
-            ->on($this->connection)
-            ->create($data);
+        return $this->model()::on($this->connection)->create($data);
     }
 
-    public function createTaskFrom($trackable, $data): TrackableTask
+    public function createTaskFrom($trackable, $data): TrackableTask|Model|Builder
     {
         $data = array_merge(match (true) {
             $this->isQueableOrEvent($trackable) => $this->getJobDetails($trackable),
@@ -139,9 +136,7 @@ class TrackableTasks
             default => throw new RuntimeException(sprintf('Unsupported trackable type [%s]', get_class($trackable))),
         }, $data);
 
-        return $this->query()
-            ->on($this->connection)
-            ->create($data);
+        return $this->model()::on($this->connection)->create($data);
     }
 
     public function updateTask($trackable, array $data): bool
