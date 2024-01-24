@@ -5,6 +5,7 @@ namespace ViicSlen\TrackableTasks;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Queue\Events\JobExceptionOccurred;
@@ -82,6 +83,19 @@ class TrackableTasks
         ]);
     }
 
+    public function model(): TrackableTask|Model
+    {
+        return app(TrackableTask::class);
+    }
+
+    public function query(): TrackableTask|Model|Builder
+    {
+        /** @var TrackableTask|Model $model */
+        $model = $this->model();
+
+        return $model->newModelQuery();
+    }
+
     public function getTaskId($job): ?int
     {
         $uses = array_flip(class_uses_recursive($job));
@@ -99,37 +113,35 @@ class TrackableTasks
             return null;
         }
 
-        $class = app(TrackableTask::class);
 
-        return $class::on($this->connection)
+        return $this->query()
+            ->on($this->connection)
             ->whereKey($id)
             ->first();
     }
 
     public function createTask(array|string $data): TrackableTask
     {
-        /** @var TrackableTask $class */
-        $class = app(TrackableTask::class);
-
         if (is_string($data)) {
             $data = ['name' => $data];
         }
 
-        return $class::on($this->connection)->create($data);
+        return $this->query()
+            ->on($this->connection)
+            ->create($data);
     }
 
     public function createTaskFrom($trackable, $data): TrackableTask
     {
-        /** @var TrackableTask $class */
-        $class = app(TrackableTask::class);
-
         $data = array_merge(match (true) {
             $this->isQueableOrEvent($trackable) => $this->getJobDetails($trackable),
             $trackable instanceof Model => $this->getModelDetails($trackable),
             default => throw new RuntimeException(sprintf('Unsupported trackable type [%s]', get_class($trackable))),
         }, $data);
 
-        return $class::on($this->connection)->create($data);
+        return $this->query()
+            ->on($this->connection)
+            ->create($data);
     }
 
     public function updateTask($trackable, array $data): bool
@@ -193,8 +205,13 @@ class TrackableTasks
 
     public function of(mixed $trackable, array $attributes): array
     {
+        /**
+         * @var class-string<\ViicSlen\TrackableTasks\Contracts\TrackableTask|\Illuminate\Database\Eloquent\Model> $trackable
+         */
+        $model = $this->model();
+
         /** @var \ViicSlen\TrackableTasks\Contracts\TrackableTask $task */
-        $task = app(TrackableTask::class)::create($attributes);
+        $task = $model::create($attributes);
 
         $uses = array_flip(class_uses_recursive($trackable));
 

@@ -8,6 +8,8 @@ use ViicSlen\TrackableTasks\Testing\Fakes\TrackableTasksFake;
 use ViicSlen\TrackableTasks\Testing\Fakes\TrackedTaskFake;
 
 /**
+ * @method static \ViicSlen\TrackableTasks\Contracts\TrackableTask|\Illuminate\Database\Eloquent\Model model()
+ * @method static \ViicSlen\TrackableTasks\Contracts\TrackableTask|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder query()
  * @method static \ViicSlen\TrackableTasks\Contracts\TrackableTask createTask(array|string $data)
  * @method static \ViicSlen\TrackableTasks\Contracts\TrackableTask createTaskFrom($trackable, array $data)
  * @method static \ViicSlen\TrackableTasks\Contracts\TrackableTask|null getTask($trackable)
