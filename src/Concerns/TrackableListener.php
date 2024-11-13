@@ -18,7 +18,7 @@ trait TrackableListener
     {
         $payload = $event->job->payload();
 
-        $job = isset($payload['data']['commandName'])
+        $job = isset($payload['data']['commandName']) && class_exists($payload['data']['commandName'])
             ? $payload['data']['commandName']
             : unserialize($payload['data']['command'], ['allowed_classes' => true]);
 
