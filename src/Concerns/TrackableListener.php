@@ -17,11 +17,11 @@ trait TrackableListener
     public function isTrackableJob(mixed $event): bool
     {
         $payload = $event->job->payload();
-        
+
         $job = isset($payload['data']['commandName'])
             ? $payload['data']['commandName']
             : unserialize($payload['data']['command'], ['allowed_classes' => true]);
-        
+
         $uses = class_uses_recursive($job);
 
         return isset($uses[TrackAutomatically::class]);
