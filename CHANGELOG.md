@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-trackable-tasks` will be documented in this file.
 
+## v11.0.0 - 2025-02-20
+
+**Full Changelog**: https://github.com/viicslen/laravel-trackable-tasks/compare/v10.1.1...v11.0.0
+
 ## v10.1.1 - 2024-11-13
 
 **Full Changelog**: https://github.com/viicslen/laravel-trackable-tasks/compare/v10.1.0...v10.1.1
