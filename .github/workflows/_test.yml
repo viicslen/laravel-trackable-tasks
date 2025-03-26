@@ -11,11 +11,15 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        laravel: [10.*]
+        laravel: [10.*, 11.*]
         stability: [prefer-lowest, prefer-stable]
-        php: [8.1, 8.2]
+        php: [8.2, 8.3, 8.4]
         include:
-          - laravel: 9.*
+          - laravel: 11.*
+            testbench: 9.*
+            larastan: 3.*
+            collision: 8.*
+          - laravel: 10.*
             testbench: 8.*
             larastan: 2.*
             collision: 7.*
