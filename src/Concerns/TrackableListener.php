@@ -12,7 +12,7 @@ trait TrackableListener
     /**
      * Determine whether the job should be handled.
      *
-     * @param JobProcessing|JobProcessed|JobFailed|JobExceptionOccurred $event
+     * @param  JobProcessing|JobProcessed|JobFailed|JobExceptionOccurred  $event
      */
     public function isTrackableJob(mixed $event): bool
     {

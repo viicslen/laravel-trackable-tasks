@@ -9,15 +9,10 @@ class SetTaskManually
 {
     public function __construct(
         protected TrackableTask $task
-    ) {
-    }
+    ) {}
 
     /**
      * Process the queued job.
-     *
-     * @param  mixed  $job
-     * @param  callable  $next
-     * @return void
      */
     public function handle(mixed $job, callable $next): void
     {

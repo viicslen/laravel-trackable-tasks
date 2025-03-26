@@ -84,7 +84,7 @@ trait TrackManually
     protected function taskSetStatus(string $status): bool
     {
         if (! in_array($status, TrackableTask::STATUSES, true)) {
-            throw new InvalidArgumentException('Invalid status provided. Allowed statuses: ' . implode(', ', TrackableTask::STATUSES));
+            throw new InvalidArgumentException('Invalid status provided. Allowed statuses: '.implode(', ', TrackableTask::STATUSES));
         }
 
         return $this->taskUpdate(['status' => $status]);

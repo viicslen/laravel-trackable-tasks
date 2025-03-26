@@ -18,8 +18,6 @@ trait TrackableEventArray
 
     /**
      * Create a new event instance.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask|\Illuminate\Database\Eloquent\Model  $trackableTask
      */
     public function __construct(
         TrackableTask|Model $trackableTask

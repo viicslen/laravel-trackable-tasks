@@ -28,7 +28,7 @@ class TrackableTasks extends Facade
     {
         self::$app->bind(TrackableTask::class, TrackedTaskFake::class);
 
-        static::swap($fake = new TrackableTasksFake());
+        static::swap($fake = new TrackableTasksFake);
 
         return $fake;
     }

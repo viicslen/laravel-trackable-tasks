@@ -165,7 +165,7 @@ class TrackableTasksFake
         return $task->addException($exception);
     }
 
-    public function batch(mixed $jobs, string $name = null): PendingBatch
+    public function batch(mixed $jobs, ?string $name = null): PendingBatch
     {
         $jobs = Collection::wrap($jobs);
 

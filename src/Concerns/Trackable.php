@@ -12,6 +12,7 @@ use ViicSlen\TrackableTasks\Facades\TrackableTasks;
 trait Trackable
 {
     public int $progressNow = 0;
+
     public int $progressMax = 100;
 
     public function failed(Throwable $exception): void

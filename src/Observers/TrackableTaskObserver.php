@@ -24,11 +24,6 @@ class TrackableTaskObserver
 {
     /**
      * Dispatch the events for the tracked task.
-     *
-     * @param  string  $key
-     * @param  string  $default
-     * @param  array  $args
-     * @return void
      */
     protected function dispatchEvent(string $key, string $default, array $args): void
     {
@@ -41,9 +36,6 @@ class TrackableTaskObserver
 
     /**
      * Handle the Task "retrieved" event.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
-     * @return void
      */
     public function retrieved(TrackableTask $task): void
     {
@@ -52,9 +44,6 @@ class TrackableTaskObserver
 
     /**
      * Handle the Task "creating" event.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
-     * @return void
      */
     public function creating(TrackableTask $task): void
     {
@@ -63,9 +52,6 @@ class TrackableTaskObserver
 
     /**
      * Handle the Task "created" event.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
-     * @return void
      */
     public function created(TrackableTask $task): void
     {
@@ -74,9 +60,6 @@ class TrackableTaskObserver
 
     /**
      * Handle the Task "updating" event.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
-     * @return void
      */
     public function updating(TrackableTask $task): void
     {
@@ -85,9 +68,6 @@ class TrackableTaskObserver
 
     /**
      * Handle the Task "updated" event.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
-     * @return void
      */
     public function updated(TrackableTask $task): void
     {
@@ -100,9 +80,6 @@ class TrackableTaskObserver
 
     /**
      * Handle the Task "saving" event.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
-     * @return void
      */
     public function saving(TrackableTask $task): void
     {
@@ -119,9 +96,6 @@ class TrackableTaskObserver
 
     /**
      * Handle the Task "saved" event.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
-     * @return void
      */
     public function saved(TrackableTask $task): void
     {
@@ -130,9 +104,6 @@ class TrackableTaskObserver
 
     /**
      * Handle the Task "deleting" event.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
-     * @return void
      */
     public function deleting(TrackableTask $task): void
     {
@@ -141,9 +112,6 @@ class TrackableTaskObserver
 
     /**
      * Handle the Task "deleted" event.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
-     * @return void
      */
     public function deleted(TrackableTask $task): void
     {
@@ -152,9 +120,6 @@ class TrackableTaskObserver
 
     /**
      * Handle the Task "trashed" event.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
-     * @return void
      */
     public function trashed(TrackableTask $task): void
     {
@@ -163,9 +128,6 @@ class TrackableTaskObserver
 
     /**
      * Handle the Task "forceDeleted" event.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
-     * @return void
      */
     public function forceDeleted(TrackableTask $task): void
     {
@@ -174,9 +136,6 @@ class TrackableTaskObserver
 
     /**
      * Handle the Task "restoring" event.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
-     * @return void
      */
     public function restoring(TrackableTask $task): void
     {
@@ -185,9 +144,6 @@ class TrackableTaskObserver
 
     /**
      * Handle the Task "restored" event.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
-     * @return void
      */
     public function restored(TrackableTask $task): void
     {
@@ -196,9 +152,6 @@ class TrackableTaskObserver
 
     /**
      * Handle the Task "replicating" event.
-     *
-     * @param  \ViicSlen\TrackableTasks\Contracts\TrackableTask  $task
-     * @return void
      */
     public function replicating(TrackableTask $task): void
     {

@@ -113,7 +113,6 @@ class TrackableTasks
             return null;
         }
 
-
         return $this->model()::on($this->connection)
             ->whereKey($id)
             ->first();
@@ -176,7 +175,7 @@ class TrackableTasks
         return $task->addException($exception);
     }
 
-    public function batch(mixed $jobs, string $name = null): PendingBatch
+    public function batch(mixed $jobs, ?string $name = null): PendingBatch
     {
         $jobs = Collection::wrap($jobs);
         $taskName = $name ?? ($jobs->first() ? get_class($jobs->first()) : 'Batch');

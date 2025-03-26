@@ -11,15 +11,13 @@ use ViicSlen\TrackableTasks\Concerns\TrackAutomatically;
 
 class TestJobWithoutTracking implements ShouldQueue
 {
+    use Batchable;
+    use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
-    use Dispatchable;
-    use Batchable;
     use TrackAutomatically;
 
     protected bool $shouldTrack = false;
 
-    public function handle(): void
-    {
-    }
+    public function handle(): void {}
 }

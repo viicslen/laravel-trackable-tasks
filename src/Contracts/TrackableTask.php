@@ -10,11 +10,17 @@ namespace ViicSlen\TrackableTasks\Contracts;
 interface TrackableTask
 {
     public const STATUS_QUEUED = 'queued';
+
     public const STATUS_STARTED = 'started';
+
     public const STATUS_PAUSED = 'paused';
+
     public const STATUS_FINISHED = 'finished';
+
     public const STATUS_STOPPED = 'stopped';
+
     public const STATUS_FAILED = 'failed';
+
     public const STATUS_RETRYING = 'retrying';
 
     public const STATUSES = [
@@ -28,7 +34,9 @@ interface TrackableTask
     ];
 
     public const TYPE_JOB = 'job';
+
     public const TYPE_BATCH = 'batch';
+
     public const TYPE_MODEL = 'model';
 
     public const TYPES = [
@@ -63,9 +71,9 @@ interface TrackableTask
 
     public function markAsStarted(): bool;
 
-    public function markAsFinished(string $message = null): bool;
+    public function markAsFinished(?string $message = null): bool;
 
-    public function markAsFailed(string $exception = null): bool;
+    public function markAsFailed(?string $exception = null): bool;
 
     public function hasStarted(): bool;
 

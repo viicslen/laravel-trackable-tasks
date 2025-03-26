@@ -15,6 +15,5 @@ class TrackableTaskExceptionAdded
     public function __construct(
         public int $taskId,
         public string $exception
-    ) {
-    }
+    ) {}
 }

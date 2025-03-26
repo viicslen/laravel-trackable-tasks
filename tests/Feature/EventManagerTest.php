@@ -1,16 +1,16 @@
 <?php
 
-use function Pest\Laravel\artisan;
-
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 use Workbench\App\Jobs\TestJobWithException;
 use Workbench\App\Jobs\TestJobWithExceptionTries;
 use Workbench\App\Jobs\TestJobWithFailTries;
 
+use function Pest\Laravel\artisan;
+
 it('updates tracked task', function () {
     config()->set('queue.default', 'database');
 
-    $job = new TestJobWithException();
+    $job = new TestJobWithException;
 
     dispatch($job);
     artisan('queue:work', ['--stop-when-empty' => true]);
@@ -24,7 +24,7 @@ it('updates tracked task', function () {
 it('updates retried task with exceptions', function () {
     config()->set('queue.default', 'database');
 
-    $job = new TestJobWithExceptionTries();
+    $job = new TestJobWithExceptionTries;
 
     dispatch($job);
     artisan('queue:work', ['--once' => true]);
@@ -38,7 +38,7 @@ it('updates retried task with exceptions', function () {
 it('updates retried task with fails', function () {
     config()->set('queue.default', 'database');
 
-    $job = new TestJobWithFailTries();
+    $job = new TestJobWithFailTries;
 
     dispatch($job);
     artisan('queue:work', ['--stop-when-empty' => true]);

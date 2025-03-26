@@ -12,8 +12,6 @@ class TrackableBatch
      * Process the queued job.
      *
      * @param  mixed  $job
-     * @param  callable  $next
-     * @return void
      */
     public function handle($job, callable $next): void
     {

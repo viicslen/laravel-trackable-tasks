@@ -11,11 +11,11 @@ use ViicSlen\TrackableTasks\Concerns\TrackAutomatically;
 
 class TestJobWithFailTries implements ShouldQueue
 {
+    use Batchable;
+    use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
-    use Dispatchable;
     use TrackAutomatically;
-    use Batchable;
 
     public int $tries = 3;
 

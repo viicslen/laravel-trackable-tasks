@@ -167,7 +167,7 @@ class TrackedTask extends Model implements TrackableTask
         ]);
     }
 
-    public function markAsFinished(string $message = null): bool
+    public function markAsFinished(?string $message = null): bool
     {
         if ($message) {
             $this->setMessage($message);
@@ -179,7 +179,7 @@ class TrackedTask extends Model implements TrackableTask
         ]);
     }
 
-    public function markAsFailed(string $exception = null): bool
+    public function markAsFailed(?string $exception = null): bool
     {
         if ($exception) {
             $this->setMessage($exception);
