@@ -32,7 +32,7 @@ class TrackableTasksServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
-        $this->app->bind('trackable_tasks', fn () => new TrackableTasks);
+        $this->app->bind('trackable_tasks', fn () => new TrackableTasks());
         $this->app->bind(TrackableTask::class, config('trackable-tasks.model'));
     }
 

@@ -5,9 +5,10 @@ namespace ViicSlen\TrackableTasks\Tests;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Orchestra\Testbench\TestCase as Orchestra;
-use ViicSlen\TrackableTasks\TrackableTasksServiceProvider;
 
 use function Orchestra\Testbench\workbench_path;
+
+use ViicSlen\TrackableTasks\TrackableTasksServiceProvider;
 
 class TestCase extends Orchestra
 {

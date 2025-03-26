@@ -9,7 +9,8 @@ class SetTaskManually
 {
     public function __construct(
         protected TrackableTask $task
-    ) {}
+    ) {
+    }
 
     /**
      * Process the queued job.

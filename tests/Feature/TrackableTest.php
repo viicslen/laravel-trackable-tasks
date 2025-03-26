@@ -1,5 +1,8 @@
 <?php
 
+use function Pest\Laravel\artisan;
+use function Pest\Laravel\assertDatabaseHas;
+
 use ViicSlen\TrackableTasks\Contracts\TrackableTask;
 use ViicSlen\TrackableTasks\Facades\TrackableTasks;
 use Workbench\App\Jobs\TestJobWithException;
@@ -10,13 +13,10 @@ use Workbench\App\Jobs\TestJobWithOutput;
 use Workbench\App\Jobs\TestJobWithoutTracking;
 use Workbench\App\Jobs\TestJobWithTracking;
 
-use function Pest\Laravel\artisan;
-use function Pest\Laravel\assertDatabaseHas;
-
 it('track batches', function () {
     $batch = TrackableTasks::batch([
-        new TestJobWithoutTracking,
-        new TestJobWithoutTracking,
+        new TestJobWithoutTracking(),
+        new TestJobWithoutTracking(),
     ], 'Test Batch')->dispatch();
 
     artisan('queue:work', ['--stop-when-empty' => true]);
@@ -29,7 +29,7 @@ it('track batches', function () {
 });
 
 it('tracks finished tasks', function () {
-    $job = new TestJobWithTracking;
+    $job = new TestJobWithTracking();
 
     assertDatabaseHas('tracked_tasks', [
         'id' => $job->getTaskId(),
@@ -48,7 +48,7 @@ it('tracks finished tasks', function () {
 it('tracks failed status with exception', function () {
     config()->set('queue.default', 'database');
 
-    $job = new TestJobWithException;
+    $job = new TestJobWithException();
 
     dispatch($job);
     artisan('queue:work', ['--stop-when-empty' => true]);
@@ -60,7 +60,7 @@ it('tracks failed status with exception', function () {
 });
 
 it('tracks failed status with fail', function () {
-    $job = new TestJobWithFail;
+    $job = new TestJobWithFail();
 
     dispatch($job);
     artisan('queue:work', ['--stop-when-empty' => true]);
@@ -73,7 +73,7 @@ it('tracks failed status with fail', function () {
 
 it('doesn\'t track jobs when should track is set to false', function () {
     $task = app(TrackableTask::class);
-    $job = new TestJobWithoutTracking;
+    $job = new TestJobWithoutTracking();
 
     expect($job->getTaskId())->toBeNull();
     expect($task::query()->count())->toEqual(0);
@@ -84,7 +84,7 @@ it('doesn\'t track jobs when should track is set to false', function () {
 });
 
 it('records message', function () {
-    $job = new TestJobWithMessage;
+    $job = new TestJobWithMessage();
 
     dispatch($job);
     artisan('queue:work', ['--stop-when-empty' => true]);
@@ -96,7 +96,7 @@ it('records message', function () {
 });
 
 it('records output', function () {
-    $job = new TestJobWithOutput;
+    $job = new TestJobWithOutput();
 
     dispatch($job);
     artisan('queue:work', ['--stop-when-empty' => true]);
@@ -108,7 +108,7 @@ it('records output', function () {
 });
 
 it('records exceptions', function () {
-    $job = new TestJobWithExceptionRecording;
+    $job = new TestJobWithExceptionRecording();
 
     dispatch($job);
     artisan('queue:work', ['--stop-when-empty' => true]);
@@ -122,7 +122,7 @@ it('records exceptions', function () {
 it('uses a fake batch', function () {
     $name = 'Test batch';
 
-    [$job, $batch] = (new TestJobWithTracking)->withFakeTrackableBatch(name: $name);
+    [$job, $batch] = (new TestJobWithTracking())->withFakeTrackableBatch(name: $name);
 
     expect($batch->name)->toEqual($name)
         ->and(TrackableTasks::getTask($job)->name)->toEqual($name);
