@@ -25,7 +25,11 @@ class TrackableTasks
 
     public function __construct()
     {
-        $this->connection = config('trackable-task.database.connection', config('database.default', 'mysql'));
+        // Note the null coalesce rather than a config() default: the published
+        // config defines database.connection as null, and config() only falls
+        // back when a key is absent, not when its value is null.
+        $this->connection = config('trackable-tasks.database.connection')
+            ?? config('database.default', 'mysql');
     }
 
     protected function isEvent($trackable): bool

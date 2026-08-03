@@ -79,7 +79,7 @@ class TrackedTask extends Model implements TrackableTask
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->setTable(config('trackable-tasks.table', 'tracked_tasks'));
+        $this->setTable(config('trackable-tasks.database.table') ?? 'tracked_tasks');
     }
 
     public function prunable(): Builder
