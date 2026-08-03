@@ -2,6 +2,24 @@
 
 All notable changes to `laravel-trackable-tasks` will be documented in this file.
 
+## v13.0.0 - 2026-08-03
+
+### Laravel 13 support
+
+- Allow `illuminate/contracts` `^13.0`
+- Widen the `orchestra/testbench`, `pestphp/pest` and `pestphp/pest-plugin-laravel` dev constraints so the suite installs on current Laravel versions
+
+### Fixes
+
+- **Restore compatibility with `Illuminate\Support\Fluent::make()`.** Laravel added a static `make()` to `Fluent` with an untyped parameter; `TrackedTaskFake` narrowed it to `array`, an incompatible signature that fatals at class load. This affected **Laravel 12.64 as well as 13** — the test suite could not boot on either.
+
+### Test harness (Laravel 13)
+
+- `job_batches` and `jobs` now ship in the framework migrations that `loadLaravelMigrations()` pulls in, so the workbench copies are guarded with `Schema::hasTable()`
+- the `tracked_tasks` stub ran from `getEnvironmentSetUp()`, which is wiped by the reset `LazilyRefreshDatabase` performs; it is now a real workbench migration delegating to the same publishable stub
+
+Verified on Laravel 12.64 and 13.23 — both report 12 failed / 19 passed, exact parity. The remaining 12 failures are pre-existing and unrelated: `cannot start a transaction within a transaction`, from the PHP 8.4 branch of `SQLiteConnection::beginTransaction` colliding with `RefreshDatabase`'s open transaction. They reproduce identically on Laravel 12.
+
 ## v12.0.1 - 2026-05-22
 
 **Full Changelog**: https://github.com/viicslen/laravel-trackable-tasks/compare/v12.0.0...v12.0.1
