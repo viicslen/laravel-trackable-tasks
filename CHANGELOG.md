@@ -2,6 +2,31 @@
 
 All notable changes to `laravel-trackable-tasks` will be documented in this file.
 
+## v13.0.1 - 2026-08-03
+
+### Fix: the database connection and table options now actually apply
+
+Two config keys were read from paths that do not exist in the published config file, so both options were silently ignored:
+
+| Read from | Should have been |
+|---|---|
+| `trackable-task.database.connection` (singular prefix) | `trackable-tasks.database.connection` |
+| `trackable-tasks.table` | `trackable-tasks.database.table` |
+
+Setting either option had no effect — every task was written to `tracked_tasks` on the default connection regardless of configuration.
+
+Both now read the correct paths using a null coalesce rather than a `config()` default. That distinction matters: the published config defines `database.connection` as `null`, and `config()` only falls back to its default argument when a key is **absent**, not when its value is `null`. Reading the corrected key with a `config()` default would have assigned `null` to the manager's `string`-typed `$connection` property and thrown a `TypeError`.
+
+#### ⚠️ Behaviour change
+
+Applications that set either option will now actually get it. If you configured a custom table or connection on an earlier version, you have been writing to `tracked_tasks` on the default connection — after upgrading you will start using the configured target. Check that the table exists there before deploying.
+
+Applications leaving both at their defaults are unaffected.
+
+#### Tests
+
+Adds `ConfigurationTest` covering both options and their fallbacks. The two "uses the configured ..." cases fail on the previous code and pass on this one; with a deterministic test order the suite goes from 16 failed / 19 passed to 14 failed / 21 passed, with no other test changing state.
+
 ## v13.0.0 - 2026-08-03
 
 ### Laravel 13 support
