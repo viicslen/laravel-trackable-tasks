@@ -11,6 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Laravel 13 ships this table in the framework migrations that
+        // loadLaravelMigrations() pulls in, so only create it on older versions.
+        if (Schema::hasTable('job_batches')) {
+            return;
+        }
+
         Schema::create('job_batches', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('name');

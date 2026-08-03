@@ -11,6 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Laravel 13 ships this table in the framework migrations that
+        // loadLaravelMigrations() pulls in, so only create it on older versions.
+        if (Schema::hasTable('jobs')) {
+            return;
+        }
+
         Schema::create('jobs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('queue')->index();

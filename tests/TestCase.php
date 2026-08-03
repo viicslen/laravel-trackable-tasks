@@ -38,10 +38,4 @@ class TestCase extends Orchestra
         $this->loadLaravelMigrations();
         $this->loadMigrationsFrom(workbench_path('database/migrations'));
     }
-
-    public function getEnvironmentSetUp($app): void
-    {
-        $migration = include __DIR__.'/../database/migrations/create_trackable_tasks_table.php.stub';
-        $migration->up();
-    }
 }

@@ -66,9 +66,15 @@ class TrackedTaskFake extends Fluent implements TrackableTask
         return new static(array_merge($attributes, ['id' => Str::orderedUuid()]));
     }
 
-    public static function make(array $attributes = []): static
+    /**
+     * Laravel 13 added Fluent::make($attributes = []) with an untyped parameter,
+     * so narrowing it to `array` here breaks the signature contract.
+     *
+     * @param  iterable<string, mixed>  $attributes
+     */
+    public static function make($attributes = []): static
     {
-        return static::create($attributes);
+        return static::create((array) $attributes);
     }
 
     public function update(array $attributes = [], array $options = []): bool
